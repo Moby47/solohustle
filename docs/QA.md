@@ -291,3 +291,10 @@ Brevo (optional: needs a free Brevo account):
 - [ ] Confirm a new subscription: after the queue runs, the contact appears in your Brevo list and "In Brevo" turns green.
 - [ ] **Sync subscribers to Brevo** sends every confirmed subscriber (safe to repeat).
 - [ ] Unsubscribe link (`/newsletter/unsubscribe/…`, from a signed link) removes them from the Brevo list too.
+
+### E5. Owner dashboard
+Dashboard home (`/admin`):
+- [ ] **Quick add** box with **New job**, **New article** and **View site** buttons.
+- [ ] Four boxes: **Articles to review**, **Jobs to re-check**, **Unread messages**, **New subscribers** (confirmed in the last 7 days). Each is yellow/blue when something needs you and green when all is done.
+- [ ] Clicking each box opens the right list, already on the right tab (Awaiting review / Needs re-check / Unread).
+- [ ] When a writer submits an article, an **Awaiting your review** list appears (oldest first) with a **Review** button; it disappears when nothing is waiting.

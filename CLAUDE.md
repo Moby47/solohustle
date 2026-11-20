@@ -299,7 +299,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] E2. Homepage sections, driven by settings.
 - [x] E3. Contact form (store + email), Inbox resource.
 - [x] E4. Newsletter: local subscribers, Brevo push/sync/test, CSV export.
-- [ ] E5. Dashboard widgets.
+- [x] E5. Dashboard widgets.
 
 **F. SEO, AEO/GEO and speed**
 - [ ] F1. `<x-seo>`, sitemap, Organization/WebSite/Article/FAQ structured data, GA4 / Search Console / Bing output from settings.
