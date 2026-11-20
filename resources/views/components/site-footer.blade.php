@@ -2,7 +2,9 @@
 <footer class="border-t border-line bg-surface">
     <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <x-logo />
-        <p class="mt-2 text-sm text-muted">Work. Write. Build.</p>
-        <p class="mt-8 text-xs text-muted">&copy; {{ now()->year }} {{ config('app.name') }}</p>
+        @if (filled(setting('general.tagline')))
+            <p class="mt-2 text-sm text-muted">{{ setting('general.tagline') }}</p>
+        @endif
+        <p class="mt-8 text-xs text-muted">&copy; {{ now()->year }} {{ setting('general.site_name') }}</p>
     </div>
 </footer>
