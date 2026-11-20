@@ -269,7 +269,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
   - Pest, git init, first commit on `main`, add origin, push, create `staging`.
   - `.env` for DBngin, `config.platform.php` = 8.3, migrate.
 - [x] A2. Brand: Tailwind tokens, self-hosted font, base layout with header/footer shells, logo.
-- [ ] A3. Portability: `media` disks and `MEDIA_DISK`, `DB_URL`/`JAWSDB_URL`, `Procfile`, `APP_PUBLIC_PATH` hook.
+- [x] A3. Portability: `media` disks and `MEDIA_DISK`, `DB_URL`/`JAWSDB_URL`, `Procfile`, `APP_PUBLIC_PATH` hook.
 
 **B. Accounts and admin**
 - [ ] B1. Filament 5, `/admin` panel, role column, admin access, brand colours.
