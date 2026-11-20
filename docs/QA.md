@@ -182,3 +182,21 @@ Author pages:
 Publish page:
 - [ ] `/publish` shows the headline, intro, "Why write for us", numbered "How it works" steps, a link to the Creator Guidelines, and **Start writing** buttons that open the writer sign-up.
 - [ ] Change the texts in **Site settings → Publish page**: the page updates.
+
+---
+
+## D. Jobs
+
+### D1. Jobs, job categories and regions (dashboard)
+Dashboard → **Jobs**:
+- [ ] **Job categories** lists the 7 categories, each with its "Related guides" blog category. Drag to reorder. Try the web address `remote`: refused with an explanation.
+- [ ] **Regions** lists 7 regions; only Worldwide has the "Anywhere" tick. Edit one to see the "Open to applicants anywhere" switch.
+- [ ] **Jobs → New job**: fill in title, category, region, work mode / type / experience (click-buttons), summary, requirements (one per line), apply link, company and logo. Try the Country dropdown search (e.g. type "nig").
+- [ ] An apply link like `javascript:x` is refused; the apply link is required.
+- [ ] Save: the job is Open, posted today, and "Last checked" says today.
+- [ ] Upload a wide logo: it is shrunk to fit (not cropped) and saved as `.webp` under `public/uploads/logos/`.
+- [ ] In the list: logo, title, company · category, where (mode · region), status, posted, closes, last checked, featured star.
+- [ ] Tabs: **Open** (default), **Needs re-check**, **Closed**, **All**.
+- [ ] Row menu (⋮): **Mark verified** (last checked becomes "now"), **Close** (clear warning; status Closed), **Reopen**, **Duplicate** (opens an open copy called "… (copy)" dated today), **View on site** (works from D4).
+- [ ] Select several jobs: bulk **Mark verified** and **Close** work.
+- [ ] Open a job: the same actions are at the top of the editor.

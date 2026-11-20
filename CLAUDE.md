@@ -141,9 +141,9 @@ Writer registration is protected by honeypot, throttling and required email veri
 - **categories**: name, slug, description, seo_title, meta_description, sort. Seed: Career, Freelancing, SEO & Content, Reviews & Guides
 - **tags**, **post_tag**
 - **posts**: author_id, category_id, title, slug, excerpt, body (HTML), cover_image, cover_alt, status (`draft`, `pending`, `changes_requested`, `published`, `rejected`), review_note, reviewed_by, reviewed_at, submitted_at, published_at, content_updated_at, key_takeaway, quick_answer (nullable, ~40–60 words), faqs (JSON: question/answer, nullable), sources (JSON: title/url, nullable), is_featured, reading_minutes, seo_title, meta_description, owns_work_confirmed_at, originality_confirmed_at
-- **job_categories**: name, slug, intro, seo_title, meta_description, sort. Seed: Content Writing, SEO, Customer Support, Design, Development, Marketing, Virtual Assistant
-- **regions**: name, slug, sort. Seed: Worldwide, Africa, Europe, North America, Latin America, Asia-Pacific, Middle East
-- **jobs**: title, slug, company_name, company_url, company_logo (nullable), job_category_id, region_id, location_note, work_mode (`remote`/`hybrid`/`onsite`), employment_type (`full_time`/`part_time`/`contract`/`freelance`/`internship`), experience_level (`entry`/`mid`/`senior`/`any`), summary, requirements (one per line), salary_text (nullable), apply_url, source_name, source_url, posted_at, last_verified_at, closes_at (nullable), status (`open`/`closed`), closed_at, is_featured, seo_title, meta_description
+- **job_categories**: name, slug, intro, seo_title, meta_description, sort, related_category_id (nullable). Seed: Content Writing, SEO, Customer Support, Design, Development, Marketing, Virtual Assistant
+- **regions**: name, slug, sort, is_worldwide. Seed: Worldwide, Africa, Europe, North America, Latin America, Asia-Pacific, Middle East
+- **jobs** (table `job_listings`, because the queue uses `jobs`): title, slug, company_name, company_url, company_logo (nullable), job_category_id, region_id, country_code (nullable), location_note, work_mode (`remote`/`hybrid`/`onsite`), employment_type (`full_time`/`part_time`/`contract`/`freelance`/`internship`), experience_level (`entry`/`mid`/`senior`/`any`), summary, requirements (one per line), salary_text (nullable), apply_url, source_name, source_url, posted_at, last_verified_at, closes_at (nullable), status (`open`/`closed`), closed_at, is_featured, seo_title, meta_description
 - **pages**: title, slug, body, seo_title, meta_description, is_published. Seed: About, Contact, Editorial Policy, Privacy Policy, Terms, Creator Guidelines, Advertise
 - **contact_messages**: name, email, subject, message, read_at
 - **subscribers**: email (unique), name (nullable), source, brevo_synced_at (nullable), unsubscribed_at. Always stored locally; pushed to Brevo (queued) when it's configured.
@@ -162,6 +162,9 @@ Index slugs, status, published_at, posted_at, and the FK + status combos used by
     - The owner can close or reopen any job at any time.
   - **Re-check**: the "Needs re-check" filter and dashboard widget show open jobs whose `last_verified_at` is more than 30 days old. A "Mark verified" action sets it to now. New jobs start verified now.
   - **Closed jobs** stay viewable with a "Closed" banner and no apply button. They are excluded from listings by default and set to `noindex`.
+  - **Region filter**: filtering by a region also shows jobs in regions marked "open to applicants anywhere" (Worldwide). (Henry, 2026-11-21)
+  - **Jobs ↔ guides**: each job category has an optional "Related blog category". Job pages show its latest guides; articles in that blog category link to those jobs. (Henry, 2026-11-21)
+  - **Country**: optional ISO country on each job, used only for JobPosting structured data. (Henry, 2026-11-21)
 - **Posts**
   - Submitting requires both confirmation checkboxes (owns the work / NDA ok, original). Save the timestamps.
   - Review actions:
@@ -286,7 +289,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] C5. Public: article template (quick answer, FAQs, sources), category pages, author pages with Person data, `/publish`, header/footer from Navigation settings.
 
 **D. Jobs**
-- [ ] D1. Job categories, regions, jobs: models, enums, admin resource, Duplicate / Mark verified / Close-Reopen actions.
+- [x] D1. Job categories, regions, jobs: models, enums, admin resource, Duplicate / Mark verified / Close-Reopen actions.
 - [ ] D2. Auto-close command (scheduled), "Needs re-check" filter.
 - [ ] D3. Public directory (Livewire, URL-synced filters), landing pages.
 - [ ] D4. Job detail, JobPosting JSON-LD, closed-job handling.
