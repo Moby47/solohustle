@@ -7,12 +7,13 @@
 - **After each sub-step, in this order**:
   1. Run Pint and the tests.
   2. Commit to `staging` and push.
-  3. Tick the sub-step in **Progress** below and commit that too.
+  3. Tick the sub-step in **Progress** below, add its browser checks to `docs/QA.md` (same style: short checkbox steps), and commit both.
   4. Tell Henry, briefly, what changed and what to test in the browser.
   5. **Stop and wait for his OK.** Do not start the next sub-step on your own.
 - **End of a group** (all of A, all of B, …): ask "Group X done. Merge `staging` into `main` and push?" Merge only on a yes, and use `--no-ff`.
 - **Before deciding something not covered here**, ask Henry. Tell him about edge cases before building, not after.
 - **Prefer the simplest solution that works.** No extra scope, no new packages without a reason.
+- **Outstanding UI/UX** matters to Henry: polished, friendly screens for visitors, writers and the owner (clear empty states, helpful messages, sensible defaults).
 - **Keep replies short.** No dumping files or restating code. Report: what changed, what to test, anything he must decide.
 
 ## Git
@@ -118,7 +119,7 @@ Writer registration is protected by honeypot, throttling and required email veri
     - number of jobs and articles shown
     - featured resource block (title, text, image, link)
     - creator block text
-  - *Navigation*: header menu items and footer link groups. Repeaters with label, link (internal page/category or URL) and order. The header CTA button gets its own label and link.
+  - *Navigation*: header menu items and footer link groups. Repeaters with label, link (internal page/category or URL) and order. The header CTA button gets its own label and link. In C5, add a "pick a page" link picker (pages, categories, job pages, or a custom address) so the owner never has to type a path.
   - *Social links*: repeater with platform (select) and URL. Seed test links (`https://x.com/solohustle_test`, `https://facebook.com/solohustle.test`, `https://linkedin.com/company/solohustle-test`, `https://instagram.com/solohustle.test`).
   - *SEO defaults*: default meta description, default share image, title suffix, "discourage search engines" switch (on until launch).
   - *Article extras*: mid-article CTA text and link, newsletter box text.
