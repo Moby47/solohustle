@@ -206,3 +206,18 @@ Dashboard → **Jobs**:
 - [ ] `php artisan schedule:list` shows `jobs:close-expired` running daily at 00:15.
 - [ ] A job whose "Last checked" is over 30 days old (edit the date in the database, or wait) appears in the **Needs re-check** tab and filter, shows a warning icon in the list, and the **Jobs** menu item shows a yellow count.
 - [ ] Reopening a job whose closing date has passed warns you to update the date first.
+
+### D3. Public job directory
+Eight sample jobs are in your local database (companies starting with "Sample", one of them closed).
+- [ ] http://solohustle.test/jobs shows the headline and intro (from **Site settings → Jobs pages**), category buttons (Remote jobs + each job category), a search box, filters, the job count, and job cards.
+- [ ] Each card: logo or first letter, title, company, chips (work mode, type, region, pay), how long ago it was posted. The featured job has a yellow border and "Featured" label and comes first.
+- [ ] Type in the search box: results update as you type (by title, company or summary). The address bar updates too.
+- [ ] Change each filter (category, work mode, region, type, experience, date posted): results update instantly and the address bar keeps the filters.
+- [ ] Copy the filtered address into a new tab: the same results appear.
+- [ ] Filter by **Africa**: Africa jobs **and** Worldwide jobs appear.
+- [ ] **Include closed jobs** shows the closed sample with a "Closed" label.
+- [ ] **Clear filters** resets everything. A search with no results shows a friendly "No jobs match" box.
+- [ ] `/jobs/remote` shows only remote jobs and no work-mode filter. `/jobs/seo` shows "SEO jobs", its intro, only SEO jobs and no category filter.
+- [ ] At phone width the filters are behind a **Filters** button; on desktop they're a sidebar.
+- [ ] With more than 20 jobs, Previous/Next and page numbers appear and keep your filters (add jobs or duplicate a few to see this).
+- [ ] In **Site settings → Navigation**, the link dropdowns now include a "Job categories" group.
