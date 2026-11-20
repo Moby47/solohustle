@@ -147,6 +147,15 @@ return [
             'newsletter_text' => 'Get new guides and jobs by email. One short email a week.',
         ],
 
+        'jobs' => [
+            'headline' => 'Remote and online jobs, picked by hand',
+            'intro' => 'Every job links to the employer\'s own page and is checked regularly, so you only see real, open roles.',
+            'meta_description' => 'Hand-picked remote and online jobs in writing, SEO, support, design, development and more. Every listing links to the real employer.',
+            'remote_headline' => 'Remote jobs',
+            'remote_intro' => 'Fully remote roles you can do from home, checked by a real person.',
+            'remote_meta_description' => 'Fully remote jobs you can do from anywhere, hand-picked and checked regularly.',
+        ],
+
         'publish' => [
             'headline' => 'Publish your work on Solo Hustle',
             'intro' => 'Share what you know with people building independent careers. Every article is reviewed by an editor and published under your name, so it makes a strong portfolio sample.',
