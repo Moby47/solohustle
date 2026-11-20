@@ -258,3 +258,15 @@ Open any sample job from `/jobs`:
 - [ ] Turn on **Featured resource**, give it a title, text, image and button: it appears near the bottom.
 - [ ] Sections with nothing to show yet (no jobs, no featured articles) stay hidden instead of showing empty boxes.
 - [ ] Check the homepage at phone width.
+
+### E3. Contact form and Inbox
+- [ ] `/contact` shows the page text and a **Send us a message** form below it.
+- [ ] Send it empty: each field shows a friendly message in red, and what you typed is kept.
+- [ ] Send a real message: a green "Thanks, … Your message has been sent" appears in place of the form.
+- [ ] Run `php artisan queue:work --stop-when-empty`: an email "New message: …" goes to the address in **Site settings → General → Send contact-form messages to**; replying to it answers the visitor.
+- [ ] Sending more than 5 messages within a minute is blocked ("Too many requests"); after a minute it works again.
+- [ ] Dashboard → **People → Inbox**: the menu shows a count of unread messages; unread messages are bold with an envelope icon.
+- [ ] Open a message: full text, name, email (click to copy), date; it is now marked read.
+- [ ] **Reply by email** opens your email app with "Re: subject" filled in.
+- [ ] **Mark as unread** takes you back to the Inbox with that message bold again.
+- [ ] Tabs **All / Unread**, search, the Read/Unread filter, and bulk mark read / unread / delete all work.
