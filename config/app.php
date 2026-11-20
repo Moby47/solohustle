@@ -68,7 +68,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // Nigerian time (WAT, UTC+1, no daylight saving): dates shown on the site, job closing and the nightly tasks follow it.
+    'timezone' => env('APP_TIMEZONE', 'Africa/Lagos'),
 
     /*
     |--------------------------------------------------------------------------

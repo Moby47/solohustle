@@ -238,7 +238,7 @@ Goal: make it easy for Google AI Overviews, ChatGPT search, Perplexity and Copil
   - locally generated branded placeholder images. Never hotlink.
 
 ## Deploy (host decided at H1)
-**Decided: Heroku** (Henry, 2026-11-21). H1 builds the Heroku kit only: Procfile/release, JawsDB, R2 media (league/flysystem-aws-s3-v3), `LOG_CHANNEL=errorlog`, `SESSION_SECURE_COOKIE`, worker dyno running `schedule:work` (which also runs the queue), first-install seeding, timezone. Proxies are already trusted and https is forced in production.
+**Decided: Heroku** (Henry, 2026-11-21). H1 builds the Heroku kit only: Procfile/release, JawsDB, R2 media (league/flysystem-aws-s3-v3), `LOG_CHANNEL=errorlog`, `SESSION_SECURE_COOKIE`, worker dyno running `schedule:work` (which also runs the queue), first-install seeding. Timezone: Nigerian time (`Africa/Lagos`, Henry 2026-11-21). Proxies are already trusted and https is forced in production.
 - **Both hosts**: run `npm run build`. Production `.env` sets `APP_ENV=production` and `APP_DEBUG=false`. HTTPS is forced in production.
 - **Namecheap shared (no SSH)**:
   - Build locally: `composer install --no-dev -o` and `npm run build`, then zip without `node_modules`, `.env` and tests (`deploy/build.ps1`).
