@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PostStatus;
 use Database\Factories\CategoryFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +17,23 @@ class Category extends Model
 {
     /** @use HasFactory<CategoryFactory> */
     use HasFactory;
+
+    protected static function booted(): void
+    {
+        // Renaming a category moves its page and every live article in it, so keep old links working.
+        static::updated(function (Category $category) {
+            if (! $category->wasChanged('slug')) {
+                return;
+            }
+
+            $old = $category->getOriginal('slug');
+
+            Redirect::recordMove("/{$old}", "/{$category->slug}");
+
+            $category->posts()->where('status', PostStatus::Published)->pluck('slug')
+                ->each(fn (string $slug) => Redirect::recordMove("/{$old}/{$slug}", "/{$category->slug}/{$slug}"));
+        });
+    }
 
     /**
      * @return HasMany<Post, $this>

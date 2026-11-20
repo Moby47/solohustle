@@ -16,6 +16,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Callout;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -32,6 +33,7 @@ class PostForm
         return $schema
             ->columns(3)
             ->components([
+                self::reviewCallout(),
                 Group::make()
                     ->columnSpan(2)
                     ->schema([
@@ -46,6 +48,35 @@ class PostForm
                         self::seoSection(),
                     ]),
             ]);
+    }
+
+    /**
+     * Shows where a guest submission stands, so the owner knows what to do next.
+     */
+    private static function reviewCallout(): Callout
+    {
+        return Callout::make(fn (?Post $record): string => match ($record?->status) {
+            PostStatus::Pending => 'Awaiting your review',
+            PostStatus::ChangesRequested => 'Sent back to the writer for changes',
+            PostStatus::Rejected => 'Rejected',
+            default => 'Guest submission',
+        })
+            ->description(function (?Post $record): string {
+                $submitted = "Submitted by {$record?->author?->name} on {$record?->submitted_at?->format('j M Y, H:i')}. They confirmed it is their own original work and theirs to publish.";
+
+                return match ($record?->status) {
+                    PostStatus::Pending => $submitted.' Read it below, then use the buttons at the top to publish it, ask for changes or reject it.',
+                    PostStatus::ChangesRequested, PostStatus::Rejected => $submitted.' Your note: "'.$record->review_note.'"',
+                    default => $submitted,
+                };
+            })
+            ->status(fn (?Post $record): string => match ($record?->status) {
+                PostStatus::Pending => 'warning',
+                PostStatus::Rejected => 'danger',
+                default => 'info',
+            })
+            ->visible(fn (?Post $record): bool => $record?->submitted_at !== null && $record->status !== PostStatus::Published)
+            ->columnSpanFull();
     }
 
     public static function articleSection(): Section

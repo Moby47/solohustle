@@ -65,7 +65,9 @@ class PostsTable
                 TernaryFilter::make('is_featured')->label('Featured'),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label(fn (Post $record): string => $record->status === PostStatus::Pending ? 'Review' : 'Edit')
+                    ->color(fn (Post $record): string => $record->status === PostStatus::Pending ? 'warning' : 'primary'),
             ])
             ->emptyStateHeading('No articles yet')
             ->emptyStateDescription('Write your first article, or wait for guest writers to submit theirs.');

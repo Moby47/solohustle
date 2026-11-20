@@ -56,6 +56,15 @@ class Post extends Model
         });
 
         static::updated(function (Post $post) {
+            $wasLive = $post->getOriginal('status') === PostStatus::Published;
+
+            if ($wasLive && $post->wasChanged(['slug', 'category_id'])) {
+                $oldCategorySlug = Category::whereKey($post->getOriginal('category_id'))->value('slug');
+                $post->unsetRelation('category');
+
+                Redirect::recordMove("/{$oldCategorySlug}/{$post->getOriginal('slug')}", $post->path());
+            }
+
             if ($post->wasChanged('cover_image')) {
                 app(ImageProcessor::class)->delete($post->getOriginal('cover_image'));
             }
@@ -140,9 +149,22 @@ class Post extends Model
         return $this->status->isEditableByWriter();
     }
 
+    public function path(): string
+    {
+        return '/'.$this->category->slug.'/'.$this->slug;
+    }
+
     public function url(): string
     {
-        return url('/'.$this->category->slug.'/'.$this->slug);
+        return url($this->path());
+    }
+
+    /**
+     * Where the writer manages this article: the editor while it's with them, otherwise the read-only view.
+     */
+    public function writerUrl(): string
+    {
+        return url('/writer/posts/'.$this->getKey().($this->isEditableByWriter() ? '/edit' : ''));
     }
 
     /**
