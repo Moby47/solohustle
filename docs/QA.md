@@ -139,3 +139,13 @@ In a private window, log in at `/writer` as `writer@solohustle.test`:
 - [ ] A rejected article shows the editor's reason and can't be edited.
 - [ ] Delete a draft: it's gone. Submitted articles have no Delete button.
 - [ ] Another writer's articles never appear, even by changing the number in the address bar.
+
+### C4. Writers (dashboard)
+Dashboard → **People → Writers**:
+- [ ] Every writer is listed with photo, name, email, published and total article counts, "Verified" tick, status badge and join date. The owner account is not listed.
+- [ ] Search by name or email works; filter by Status (Active / Suspended) and Email verified.
+- [ ] Open a writer: profile (photo, headline, bio, links), account details, and a list of their articles with **Review** / **Open** buttons that go to the article editor.
+- [ ] **View author page** shows only when they have published articles (works from C5).
+- [ ] **Suspend** a writer: a clear warning explains what happens; they show "Suspended".
+- [ ] Try to sign in as that writer: "This account has been suspended…" message. Their author page (C5) shows "not found"; their published articles stay online.
+- [ ] **Unsuspend**: they can sign in again.
