@@ -264,7 +264,7 @@ Goal: make it easy for Google AI Overviews, ChatGPT search, Perplexity and Copil
 Tick each sub-step (`[x]`) when it's done and committed. At the end of each group, ask to merge into `main`.
 
 **A. Foundation**
-- [ ] A1. Create the project:
+- [x] A1. Create the project:
   - `composer create-project laravel/laravel .` in the empty folder (not `laravel new`, which refuses an existing folder).
   - Pest, git init, first commit on `main`, add origin, push, create `staging`.
   - `.env` for DBngin, `config.platform.php` = 8.3, migrate.
