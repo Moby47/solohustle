@@ -89,6 +89,7 @@ final class Settings
     {
         Cache::forget(self::CACHE_KEY);
         LlmsTxt::forget();
+        PageCache::flush();
         $this->resolved = null;
     }
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowArticle;
 use App\Http\Controllers\ShowAuthor;
 use App\Http\Controllers\ShowPageOrCategory;
+use App\Http\Middleware\CachePublicPages;
 use App\Support\LlmsTxt;
 use App\Support\SitemapBuilder;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +22,6 @@ $reserved = implode('|', array_map('preg_quote', config('site.reserved_slugs')))
 $publicSlug = "(?!(?:{$reserved})(?![a-z0-9-]))[a-z0-9]+(?:-[a-z0-9]+)*";
 $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 
-Route::get('/', HomeController::class)->name('home');
-Route::view('/publish', 'publish')->name('publish');
 Route::get('/search', SearchController::class)->name('search');
 
 Route::get('/robots.txt', RobotsController::class)->name('robots');
@@ -53,20 +52,26 @@ Route::middleware([ProtectAgainstSpam::class, 'throttle:public-forms'])->group(f
 // Signed links from emails; the controller checks the signature so it can show a friendly page.
 Route::get('/newsletter/confirm/{subscriber}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');
 Route::get('/newsletter/unsubscribe/{subscriber}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
-Route::get('/authors/{slug}', ShowAuthor::class)->where('slug', $slug)->name('authors.show');
 
-Route::get('/jobs', [JobBoardController::class, 'index'])->name('jobs.index');
-Route::get('/jobs/remote', [JobBoardController::class, 'remote'])->name('jobs.remote');
-Route::get('/jobs/{slug}', [JobBoardController::class, 'category'])->where('slug', $slug)->name('jobs.category');
-Route::get('/jobs/{category}/{job}', [JobBoardController::class, 'show'])
-    ->where(['category' => $slug, 'job' => $slug])
-    ->name('jobs.show');
+// Public content pages: served from the page cache for visitors.
+Route::middleware(CachePublicPages::class)->group(function () use ($slug, $publicSlug) {
+    Route::get('/', HomeController::class)->name('home');
+    Route::view('/publish', 'publish')->name('publish');
+    Route::get('/authors/{slug}', ShowAuthor::class)->where('slug', $slug)->name('authors.show');
 
-// Catch-alls for the blog and owner pages. Keep them last so fixed routes win.
-Route::get('/{category}/{post}', ShowArticle::class)
-    ->where(['category' => $publicSlug, 'post' => $slug])
-    ->name('articles.show');
+    Route::get('/jobs', [JobBoardController::class, 'index'])->name('jobs.index');
+    Route::get('/jobs/remote', [JobBoardController::class, 'remote'])->name('jobs.remote');
+    Route::get('/jobs/{slug}', [JobBoardController::class, 'category'])->where('slug', $slug)->name('jobs.category');
+    Route::get('/jobs/{category}/{job}', [JobBoardController::class, 'show'])
+        ->where(['category' => $slug, 'job' => $slug])
+        ->name('jobs.show');
 
-Route::get('/{slug}', ShowPageOrCategory::class)
-    ->where('slug', $publicSlug)
-    ->name('pages.show');
+    // Catch-alls for the blog and owner pages. Keep them last so fixed routes win.
+    Route::get('/{category}/{post}', ShowArticle::class)
+        ->where(['category' => $publicSlug, 'post' => $slug])
+        ->name('articles.show');
+
+    Route::get('/{slug}', ShowPageOrCategory::class)
+        ->where('slug', $publicSlug)
+        ->name('pages.show');
+});

@@ -9,6 +9,7 @@ use App\Models\Job;
 use App\Models\Post;
 use App\Support\IndexNow;
 use App\Support\LlmsTxt;
+use App\Support\PageCache;
 use Illuminate\Database\Eloquent\Model;
 
 /** Keeps everything derived from public content fresh when that content changes. */
@@ -20,6 +21,7 @@ class SiteContentObserver
     public function created(Model $model): void
     {
         LlmsTxt::forget();
+        PageCache::flush();
 
         $this->notifySearchEngines($model);
     }
@@ -27,6 +29,7 @@ class SiteContentObserver
     public function updated(Model $model): void
     {
         LlmsTxt::forget();
+        PageCache::flush();
 
         if (array_diff(array_keys($model->getChanges()), self::INVISIBLE_CHANGES) !== []) {
             $this->notifySearchEngines($model);
@@ -36,6 +39,7 @@ class SiteContentObserver
     public function deleted(Model $model): void
     {
         LlmsTxt::forget();
+        PageCache::flush();
     }
 
     /**
