@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use App\Filament\Forms\LinkPicker;
+use App\Support\Brevo;
 use App\Support\MailSettings;
+use App\Support\Newsletter;
 use App\Support\Settings;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -155,6 +157,41 @@ class ManageSettings extends Page
                 ? "Email sending isn't set up yet, so the message was written to the site's log file instead of being delivered."
                 : null)
             ->send();
+    }
+
+    private function testBrevo(): void
+    {
+        $brevo = app(Brevo::class);
+
+        if (! $brevo->isConfigured()) {
+            Notification::make()->warning()->title('Add your Brevo API key and list ID, then save, first.')->send();
+
+            return;
+        }
+
+        try {
+            $account = $brevo->testConnection();
+        } catch (Throwable $exception) {
+            report($exception);
+            Notification::make()->danger()->title('Brevo said no')->body('Check the API key and try again. Details: '.$exception->getMessage())->persistent()->send();
+
+            return;
+        }
+
+        Notification::make()->success()->title("Connected to Brevo as {$account}")->send();
+    }
+
+    private function syncBrevo(): void
+    {
+        if (! app(Brevo::class)->isConfigured()) {
+            Notification::make()->warning()->title('Add your Brevo API key and list ID, then save, first.')->send();
+
+            return;
+        }
+
+        $count = app(Newsletter::class)->syncAllToBrevo();
+
+        Notification::make()->success()->title("Sending {$count} subscriber(s) to Brevo")->body('This happens in the background over the next few minutes.')->send();
     }
 
     /**
@@ -500,6 +537,21 @@ class ManageSettings extends Page
                     ->schema([
                         $this->secretInput('integrations.brevo_api_key', 'Brevo API key'),
                         TextInput::make('integrations.brevo_list_id')->label('List ID')->numeric(),
+                        Actions::make([
+                            Action::make('testBrevo')
+                                ->label('Test connection')
+                                ->icon(Heroicon::OutlinedSignal)
+                                ->color('gray')
+                                ->action(fn () => $this->testBrevo()),
+                            Action::make('syncBrevo')
+                                ->label('Sync subscribers to Brevo')
+                                ->icon(Heroicon::OutlinedArrowPath)
+                                ->color('gray')
+                                ->requiresConfirmation()
+                                ->modalDescription('Sends every confirmed subscriber to your Brevo list. It runs in the background and is safe to repeat.')
+                                ->action(fn () => $this->syncBrevo()),
+                        ])->key('brevoActions')->columnSpanFull(),
+                        Text::make('Save your changes first; the buttons use the saved details.')->columnSpanFull(),
                     ]),
                 Section::make('Google')
                     ->columns(2)

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobBoardController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowArticle;
 use App\Http\Controllers\ShowAuthor;
@@ -24,7 +25,12 @@ Route::get('/search', SearchController::class)->name('search');
 // Public forms: honeypot + per-visitor rate limit.
 Route::middleware([ProtectAgainstSpam::class, 'throttle:public-forms'])->group(function () {
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+    Route::post('/newsletter', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 });
+
+// Signed links from emails; the controller checks the signature so it can show a friendly page.
+Route::get('/newsletter/confirm/{subscriber}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');
+Route::get('/newsletter/unsubscribe/{subscriber}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 Route::get('/authors/{slug}', ShowAuthor::class)->where('slug', $slug)->name('authors.show');
 
 Route::get('/jobs', [JobBoardController::class, 'index'])->name('jobs.index');

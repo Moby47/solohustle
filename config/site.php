@@ -14,7 +14,7 @@ return [
     // Top-level addresses used by the app itself, so pages and categories can't take them.
     'reserved_slugs' => [
         'admin', 'api', 'authors', 'build', 'category', 'css', 'email', 'feed', 'filament', 'fonts', 'jobs',
-        'js', 'livewire', 'llms', 'login', 'logout', 'password', 'publish', 'register', 'robots', 'rss',
+        'js', 'livewire', 'llms', 'login', 'logout', 'newsletter', 'password', 'publish', 'register', 'robots', 'rss',
         'search', 'sitemap', 'storage', 'tag', 'tags', 'up', 'uploads', 'vendor', 'writer',
     ],
 

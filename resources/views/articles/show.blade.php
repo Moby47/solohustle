@@ -185,6 +185,14 @@
                         @endif
                     </div>
                 </aside>
+
+                @if ($isLive && filled(setting('article.newsletter_text')))
+                    <aside aria-labelledby="article-newsletter" class="mt-12 rounded-2xl bg-primary px-6 py-8 text-white sm:px-8">
+                        <h2 id="article-newsletter" class="text-xl text-white">Get the next one by email</h2>
+                        <p class="mt-2 text-white/85">{{ setting('article.newsletter_text') }}</p>
+                        <x-newsletter-form source="article" :dark="true" class="mt-5" />
+                    </aside>
+                @endif
             </div>
 
             @if ($body->hasTableOfContents())
