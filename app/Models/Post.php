@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Searchable;
 
 /** An article, written by the owner or a guest writer. */
 #[Fillable([
@@ -27,6 +29,8 @@ class Post extends Model
 {
     /** @use HasFactory<PostFactory> */
     use HasFactory;
+
+    use Searchable;
 
     /** Cover sizes: the full image is 16:9; narrower copies are made for phones and cards. */
     public const COVER_WIDTH = 1600;
@@ -91,6 +95,21 @@ class Post extends Model
             'content_updated_at' => 'datetime',
             'owns_work_confirmed_at' => 'datetime',
             'originality_confirmed_at' => 'datetime',
+        ];
+    }
+
+    /**
+     * Site search: the title matches partial words; the summary and text use MySQL full-text search.
+     *
+     * @return array<string, mixed>
+     */
+    #[SearchUsingFullText(['excerpt', 'body'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'excerpt' => $this->excerpt,
+            'body' => $this->body,
         ];
     }
 

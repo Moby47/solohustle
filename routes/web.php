@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\JobBoardController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowArticle;
 use App\Http\Controllers\ShowAuthor;
 use App\Http\Controllers\ShowPageOrCategory;
@@ -15,6 +16,7 @@ $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 
 Route::view('/', 'home')->name('home');
 Route::view('/publish', 'publish')->name('publish');
+Route::get('/search', SearchController::class)->name('search');
 Route::get('/authors/{slug}', ShowAuthor::class)->where('slug', $slug)->name('authors.show');
 
 Route::get('/jobs', [JobBoardController::class, 'index'])->name('jobs.index');
