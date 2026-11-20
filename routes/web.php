@@ -20,6 +20,9 @@ Route::get('/authors/{slug}', ShowAuthor::class)->where('slug', $slug)->name('au
 Route::get('/jobs', [JobBoardController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/remote', [JobBoardController::class, 'remote'])->name('jobs.remote');
 Route::get('/jobs/{slug}', [JobBoardController::class, 'category'])->where('slug', $slug)->name('jobs.category');
+Route::get('/jobs/{category}/{job}', [JobBoardController::class, 'show'])
+    ->where(['category' => $slug, 'job' => $slug])
+    ->name('jobs.show');
 
 // Catch-alls for the blog and owner pages. Keep them last so fixed routes win.
 Route::get('/{category}/{post}', ShowArticle::class)

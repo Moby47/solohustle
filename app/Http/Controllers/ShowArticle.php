@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\PostStatus;
+use App\Models\JobCategory;
 use App\Models\Post;
 use App\Support\ArticleBody;
 use Illuminate\Http\RedirectResponse;
@@ -42,6 +43,7 @@ class ShowArticle extends Controller
             'isLive' => $isLive,
             'isAdmin' => (bool) $request->user()?->isAdmin(),
             'authorHasPage' => $post->author->hasAuthorPage(),
+            'jobCategories' => JobCategory::where('related_category_id', $post->category_id)->orderBy('sort')->get(),
         ]);
     }
 }
