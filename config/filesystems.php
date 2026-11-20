@@ -47,6 +47,31 @@ return [
             'report' => false,
         ],
 
+        // Uploads served straight from the web root, so no storage:link is needed (local and Namecheap).
+        'media_local' => [
+            'driver' => 'local',
+            'root' => rtrim(env('APP_PUBLIC_PATH') ?: public_path(), '/\\').'/uploads',
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/uploads',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        // S3-compatible bucket (Cloudflare R2) for Heroku, whose disk is wiped on every restart.
+        'media_s3' => [
+            'driver' => 's3',
+            'key' => env('MEDIA_S3_KEY'),
+            'secret' => env('MEDIA_S3_SECRET'),
+            'region' => env('MEDIA_S3_REGION', 'auto'),
+            'bucket' => env('MEDIA_S3_BUCKET'),
+            'url' => env('MEDIA_S3_URL'),
+            'endpoint' => env('MEDIA_S3_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
