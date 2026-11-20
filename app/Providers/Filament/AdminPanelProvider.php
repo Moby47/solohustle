@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Providers\Filament\Concerns\UsesSiteBranding;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -11,7 +12,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -23,18 +23,16 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 /** The owner's dashboard at /admin. */
 class AdminPanelProvider extends PanelProvider
 {
+    use UsesSiteBranding;
+
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        return $this->applySiteBranding($panel)
             ->default()
             ->id('admin')
             ->path('admin')
             ->login()
             ->passwordReset()
-            ->brandName(config('app.name'))
-            ->colors([
-                'primary' => Color::hex('#0750A1'),
-            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
