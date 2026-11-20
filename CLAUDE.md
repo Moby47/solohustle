@@ -303,7 +303,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 
 **F. SEO, AEO/GEO and speed**
 - [x] F1. `<x-seo>`, sitemap, Organization/WebSite/Article/FAQ structured data, GA4 / Search Console / Bing output from settings.
-- [ ] F2. AEO/GEO: AI & search engines settings tab, dynamic `robots.txt` with AI crawler switches, `/llms.txt`, IndexNow.
+- [x] F2. AEO/GEO: AI & search engines settings tab, dynamic `robots.txt` with AI crawler switches, `/llms.txt`, IndexNow.
 - [ ] F3. Response cache + busting, image `srcset`, indexes, eager loading, Lighthouse pass.
 
 **G. Content and QA**

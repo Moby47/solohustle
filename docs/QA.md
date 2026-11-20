@@ -313,3 +313,14 @@ Tip: in Chrome, right-click a page → **View page source** to see these tags; o
 - [ ] `/sitemap.xml` lists the homepage, job pages, open jobs, pages, categories, published articles and author pages, but no drafts or closed jobs. It is rebuilt every night.
 - [ ] **Site settings → Integrations → Search Console code**: after saving, page source contains `google-site-verification`.
 - [ ] Live site only: with a **Google Analytics ID** saved, a slim cookie bar appears at the bottom; nothing is tracked until **Accept**. **Decline** hides it for good; the footer's **Cookie settings** link brings it back. Without an ID there is no bar.
+
+### F2. AI assistants and search engines
+Dashboard → **Site settings → AI & search engines**:
+- [ ] Six switches (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot), all on, with a plain explanation of who each one is.
+- [ ] Before launch, `/robots.txt` says `Disallow: /` for everyone.
+- [ ] Turn off **Ask search engines not to list the site** (SEO defaults): `/robots.txt` now allows the site, hides `/admin` and `/writer`, and links the sitemap.
+- [ ] Switch off GPTBot and save: `/robots.txt` now has a `User-agent: GPTBot / Disallow: /` block. Switch it back on: the block disappears.
+- [ ] `/llms.txt` lists the site name and description, key pages, job pages, blog topics and the latest 20 articles. Publish an article: it appears straight away. Switch the guide off: `/llms.txt` shows "not found".
+- [ ] Paste a Bing verification meta tag and save: only the code is kept, and page source shows `msvalidate.01`.
+- [ ] Switch **IndexNow** on and save: the helper text now shows "Your key file: …/xxxxxxxx.txt", and that address shows the key. (Pings are only sent from the live site.)
+- [ ] Turn the site-wide "discourage" switch back on afterwards if the site isn't launched yet.
