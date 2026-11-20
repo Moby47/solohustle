@@ -149,3 +149,36 @@ Dashboard → **People → Writers**:
 - [ ] **Suspend** a writer: a clear warning explains what happens; they show "Suspended".
 - [ ] Try to sign in as that writer: "This account has been suspended…" message. Their author page (C5) shows "not found"; their published articles stay online.
 - [ ] **Unsuspend**: they can sign in again.
+
+### C5. Public blog, author pages, Publish page, header and footer
+A sample article is in your local database: http://solohustle.test/career/find-your-first-remote-job
+
+Header and footer (check at desktop **and** phone width):
+- [ ] Header shows the logo, the menu from **Site settings → Navigation**, and the header button. The menu item for the section you're in is highlighted.
+- [ ] At phone width, the menu icon opens a slide-out menu; it closes with the X, by tapping outside, or with Esc.
+- [ ] Footer shows your link groups, the social links (as small labels) and the copyright line.
+- [ ] **Site settings → Navigation**: the link fields are now dropdowns (Main sections, Blog categories, Pages). Use the **+** next to a dropdown to add any other address. Saved custom addresses still show.
+
+Article page (the sample article):
+- [ ] Breadcrumb, category label, title, summary, author photo/initials, published date and reading time.
+- [ ] The **Quick answer** box sits under the title.
+- [ ] Cover image (if set) is sharp and doesn't jump while loading.
+- [ ] "In this article" table of contents: a sticky sidebar on desktop, a collapsible box on phones; links jump to each heading.
+- [ ] The lavender mid-article box (from **Site settings → Article extras**) appears after the second section.
+- [ ] Key takeaway (yellow), FAQs (click to open), numbered Sources, tags, "Written by" box, and "More in Career" at the bottom.
+- [ ] Edit the article text in the dashboard on a later day: an "Updated" date appears next to Published.
+- [ ] Logged in as owner you see "Edit in dashboard" at the top; logged out you don't.
+- [ ] A draft opened by its writer shows a yellow "Preview" bar; logged out it shows "not found". A future publish date shows "Scheduled".
+- [ ] In the dashboard, the article editor has **View on site** / **Preview** at the top.
+
+Category pages:
+- [ ] `/career` shows the intro text and article cards (newest first), with pages of 12.
+- [ ] An empty category (e.g. `/freelancing`) shows "No articles here yet" with a button to Publish with us.
+
+Author pages:
+- [ ] Click the author's name on an article: photo, headline, bio, links and their articles.
+- [ ] A writer with no published articles, or a suspended writer, has no author page (not found), and their name isn't a link.
+
+Publish page:
+- [ ] `/publish` shows the headline, intro, "Why write for us", numbered "How it works" steps, a link to the Creator Guidelines, and **Start writing** buttons that open the writer sign-up.
+- [ ] Change the texts in **Site settings → Publish page**: the page updates.

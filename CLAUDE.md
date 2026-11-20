@@ -283,7 +283,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] C2. Review flow (accept / accept with edits / ask for changes / reject), queued emails, slug redirects.
 - [x] C3. Writer side: own posts, edit rules, submit with the two confirmations, status and notes.
 - [x] C4. Admin Writers resource with suspend/unsuspend.
-- [ ] C5. Public: article template (quick answer, FAQs, sources), category pages, author pages with Person data, `/publish`, header/footer from Navigation settings.
+- [x] C5. Public: article template (quick answer, FAQs, sources), category pages, author pages with Person data, `/publish`, header/footer from Navigation settings.
 
 **D. Jobs**
 - [ ] D1. Job categories, regions, jobs: models, enums, admin resource, Duplicate / Mark verified / Close-Reopen actions.
