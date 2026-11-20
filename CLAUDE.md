@@ -307,7 +307,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [ ] F3. Response cache + busting, image `srcset`, indexes, eager loading, Lighthouse pass.
 
 **G. Content and QA**
-- [ ] G1. `DemoSeeder` with placeholder images; full local click-through.
+- [x] G1. `DemoSeeder` with placeholder images; full local click-through.
 - [ ] G2. Full test pass: every form, link, filter and apply link, on phone, tablet and desktop.
 
 **H. Launch**

@@ -333,3 +333,17 @@ Dashboard → **Site settings → AI & search engines**:
 - [ ] Contact and newsletter forms still work on cached pages, and their thank-you / error messages always appear.
 - [ ] Images in article text load only as you scroll down to them.
 - [ ] Lighthouse (Chrome → right-click → Inspect → **Lighthouse** tab → Mobile → Analyze) on the homepage, `/jobs`, a job page and an article: Performance, Accessibility, Best practices and SEO should each be 90+. (SEO shows lower until the "discourage search engines" switch is turned off at launch.)
+
+---
+
+## G. Content and QA
+
+### G1. Demo content
+- [ ] Developer: `php artisan migrate:fresh --seed` gives a full local site (this wipes local data first). On an existing database, `php artisan db:seed --class=DemoSeeder` adds the demo content once.
+- [ ] Logins: `admin@solohustle.test` / `password` (owner) and `writer@solohustle.test` / `password` (writer).
+- [ ] The homepage shows featured guides, latest articles and latest jobs, all with colourful placeholder images (made on your computer, not downloaded).
+- [ ] 4 writers with photos and bios; their author pages work.
+- [ ] Articles in every status: published, awaiting review (2), changes requested, drafts, rejected. Some have quick answers, FAQs and sources.
+- [ ] 30 jobs: some featured, some with closing dates, 5 closed, several flagged "Needs re-check"; half have logos.
+- [ ] A few subscribers (subscribed, waiting, unsubscribed) and inbox messages (2 unread).
+- [ ] Click through the whole public site: every menu, footer link, card, breadcrumb and button goes somewhere sensible. (Developer: an automated crawl of all 122 public addresses found no broken links, images or styles.)
