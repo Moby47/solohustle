@@ -10,7 +10,7 @@ Tick a box when it passes. If something fails, note the step number and what you
 | Public site | http://solohustle.test |
 | Owner dashboard | http://solohustle.test/admin — `admin@solohustle.test` / `password` |
 | Writer area | http://solohustle.test/writer — `writer@solohustle.test` / `password` |
-| Emails (local) | Not sent. They are written to the end of `storage/logs/laravel.log` |
+| Emails (local) | Not sent. They are written to the end of `storage/logs/laravel.log`. Review emails are queued: run `php artisan queue:work --stop-when-empty` first to process them |
 | Automated tests | `php artisan test` (should end in "passed") |
 
 Tips:
@@ -114,3 +114,14 @@ Dashboard → **Content**:
 
 Writer area → **Profile**:
 - [ ] Upload a photo of any shape: it is cropped square and saved as `.webp` under `public/uploads/authors/`.
+
+### C2. Review flow
+Setup: as the writer (private window, from C3 onwards you can do this in the writer area), or ask me to create a submitted test article. In the dashboard, an article "Awaiting review" shows a yellow count on **Articles** and a **Review** button in the list.
+- [ ] Open a submission: a yellow box at the top says who submitted it and when, and that they confirmed it's their own original work.
+- [ ] Buttons at the top: **Publish as is**, **Save my edits & publish**, and **Other decisions** (Ask for changes, Reject). Delete is hidden while it awaits review.
+- [ ] **Ask for changes** without a note: refused. With a note: the article goes to "Changes requested" and the box shows your note.
+- [ ] Submit again (as the writer), then **Reject** with a reason: status "Rejected".
+- [ ] Submit another, edit its title, then **Save my edits & publish**: the new title is saved and it's published.
+- [ ] Run `php artisan queue:work --stop-when-empty`, then check `storage/logs/laravel.log`: there's a friendly email for each step (new submission to you; published / changes requested / rejected to the writer), each with a button link.
+- [ ] Change the web address of a published article: **Settings → Redirects** shows a redirect from the old address.
+- [ ] Rename a category's web address: the category and each of its published articles get a redirect.
