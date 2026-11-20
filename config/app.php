@@ -54,6 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    // Absolute path to the web root when it isn't ./public (Namecheap's public_html). Empty everywhere else.
+    'public_path' => env('APP_PUBLIC_PATH'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

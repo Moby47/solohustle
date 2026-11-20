@@ -39,7 +39,7 @@ Solo Hustle ("Work. Write. Build.") is a career and creator hub with three parts
 - **guest writers** who publish original work as portfolio samples, after the owner reviews it
 
 It must look credible and editorial. It must **not** look like a make-money-online blog or a generic job board.
-Original client brief: `docs/Solo_Hustle_Website_Build_Brief.pdf`. Plain brief sent to the client: `docs/solo-hustle-brief.pdf`.
+Client brief: `docs/Solo_Hustle_Website_Build_Brief.pdf`.
 
 **Guiding rule: give the owner as much control as possible from the dashboard, as simply as possible.**
 - Any text, link, image or setting she might want to change goes in the dashboard, not in code.
@@ -49,7 +49,7 @@ Original client brief: `docs/Solo_Hustle_Website_Build_Brief.pdf`. Plain brief s
 - Laravel 13, PHP 8.3+ (`composer.json` → `config.platform.php` = `8.3` until the host is chosen), MySQL 8.
 - Local:
   - Herd at `C:\Users\Henry\Herd\solohustle` → http://solohustle.test
-  - DBngin MySQL on 127.0.0.1:3306, root, no password, DB `solohustle`
+  - DBngin MySQL on 127.0.0.1:3306, root, no password, DB `solohustle`; tests use DB `solohustle_test` (MySQL, never SQLite)
   - Windows / PowerShell. Use `where.exe`, not `where`.
 - Public site: Blade + Livewire 4 + Tailwind v4 (Laravel's default Vite setup). Use **no starter kit**, because Filament handles all logins.
 - Admin and writer areas: **Filament 5**, with two panels:
@@ -264,12 +264,12 @@ Goal: make it easy for Google AI Overviews, ChatGPT search, Perplexity and Copil
 Tick each sub-step (`[x]`) when it's done and committed. At the end of each group, ask to merge into `main`.
 
 **A. Foundation**
-- [ ] A1. Create the project:
+- [x] A1. Create the project:
   - `composer create-project laravel/laravel .` in the empty folder (not `laravel new`, which refuses an existing folder).
   - Pest, git init, first commit on `main`, add origin, push, create `staging`.
   - `.env` for DBngin, `config.platform.php` = 8.3, migrate.
-- [ ] A2. Brand: Tailwind tokens, self-hosted font, base layout with header/footer shells, logo.
-- [ ] A3. Portability: `media` disks and `MEDIA_DISK`, `DB_URL`/`JAWSDB_URL`, `Procfile`, `APP_PUBLIC_PATH` hook.
+- [x] A2. Brand: Tailwind tokens, self-hosted font, base layout with header/footer shells, logo.
+- [x] A3. Portability: `media` disks and `MEDIA_DISK`, `DB_URL`/`JAWSDB_URL`, `Procfile`, `APP_PUBLIC_PATH` hook.
 
 **B. Accounts and admin**
 - [ ] B1. Filament 5, `/admin` panel, role column, admin access, brand colours.
