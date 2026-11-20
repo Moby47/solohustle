@@ -1,5 +1,6 @@
 @import '@fontsource-variable/inter';
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -39,5 +40,24 @@
 
     :focus-visible {
         @apply outline-2 outline-offset-2 outline-primary;
+    }
+}
+
+/* Long-form text (pages, articles) in brand colours. */
+.prose {
+    --tw-prose-body: var(--color-ink);
+    --tw-prose-headings: var(--color-ink);
+    --tw-prose-links: var(--color-primary);
+    --tw-prose-bold: var(--color-ink);
+    --tw-prose-bullets: var(--color-primary);
+    --tw-prose-counters: var(--color-muted);
+    --tw-prose-quotes: var(--color-ink);
+    --tw-prose-quote-borders: var(--color-secondary);
+    --tw-prose-hr: var(--color-line);
+    --tw-prose-th-borders: var(--color-line);
+    --tw-prose-td-borders: var(--color-line);
+
+    a {
+        @apply underline decoration-primary/30 underline-offset-2 transition-colors hover:decoration-primary;
     }
 }

@@ -1,4 +1,4 @@
-@props(['title' => null])
+@props(['title' => null, 'description' => null, 'noindex' => false])
 
 @php($siteName = setting('general.site_name'))
 @php($faviconUrl = media_url(setting('general.favicon')))
@@ -9,6 +9,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ? $title.' | '.setting('seo.title_suffix', $siteName) : $siteName }}</title>
+    <meta name="description" content="{{ $description ?: setting('seo.default_meta_description') }}">
+    @if ($noindex || setting('seo.discourage_search_engines'))
+        <meta name="robots" content="noindex, nofollow">
+    @endif
     @if ($faviconUrl)
         <link rel="icon" type="image/png" href="{{ $faviconUrl }}">
     @endif
