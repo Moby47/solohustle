@@ -125,3 +125,17 @@ Setup: as the writer (private window, from C3 onwards you can do this in the wri
 - [ ] Run `php artisan queue:work --stop-when-empty`, then check `storage/logs/laravel.log`: there's a friendly email for each step (new submission to you; published / changes requested / rejected to the writer), each with a button link.
 - [ ] Change the web address of a published article: **Settings → Redirects** shows a redirect from the old address.
 - [ ] Rename a category's web address: the category and each of its published articles get a redirect.
+
+### C3. Writer articles
+In a private window, log in at `/writer` as `writer@solohustle.test`:
+- [ ] The dashboard shows three boxes: **In progress**, **With the editor**, **Published** (clicking one opens My articles).
+- [ ] **My articles** with no articles shows a friendly empty state with **Write your first article**.
+- [ ] **New article**: there is no status, author, featured or web-address field. Fill in a title, category and some text; save: "Draft saved" and you stay in the editor, with a "Your draft" note at the top.
+- [ ] **Submit for review** with a very short text: an "Almost there" message explains what's missing (summary, at least 300 words).
+- [ ] Write 300+ words and a summary; **Submit for review**: both checkboxes must be ticked, then you land on a read-only view saying "Awaiting review".
+- [ ] The article can no longer be edited (no Edit button; opening the edit address directly is refused).
+- [ ] As the owner, **Ask for changes** with a note: back as the writer, the article is editable again and the note shows in a blue box at the top and in the list.
+- [ ] Resubmit; as the owner, **Publish**: the writer sees "Published" with a **View on site** button and can't edit it.
+- [ ] A rejected article shows the editor's reason and can't be edited.
+- [ ] Delete a draft: it's gone. Submitted articles have no Delete button.
+- [ ] Another writer's articles never appear, even by changing the number in the address bar.
