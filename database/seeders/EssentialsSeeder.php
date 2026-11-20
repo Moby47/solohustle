@@ -6,7 +6,9 @@ namespace Database\Seeders;
 
 use App\Enums\UserRole;
 use App\Models\Category;
+use App\Models\JobCategory;
 use App\Models\Page;
+use App\Models\Region;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -19,6 +21,46 @@ class EssentialsSeeder extends Seeder
         $this->seedAdmin();
         $this->seedPages();
         $this->seedCategories();
+        $this->seedJobCategories();
+        $this->seedRegions();
+    }
+
+    private function seedJobCategories(): void
+    {
+        // slug => [name, intro, related blog category slug]
+        $jobCategories = [
+            'content-writing' => ['Content Writing', 'Remote writing jobs: blog posts, copywriting, editing and more.', 'seo-content'],
+            'seo' => ['SEO', 'Remote SEO jobs, from content and on-page work to technical SEO.', 'seo-content'],
+            'customer-support' => ['Customer Support', 'Remote support roles helping customers by chat, email and phone.', 'career'],
+            'design' => ['Design', 'Remote design jobs in product, brand and visual design.', 'freelancing'],
+            'development' => ['Development', 'Remote developer jobs across web, mobile and data.', 'career'],
+            'marketing' => ['Marketing', 'Remote marketing roles in content, social, email and growth.', 'seo-content'],
+            'virtual-assistant' => ['Virtual Assistant', 'Remote assistant roles supporting busy founders and teams.', 'freelancing'],
+        ];
+
+        $sort = 1;
+
+        foreach ($jobCategories as $slug => [$name, $intro, $relatedSlug]) {
+            JobCategory::firstOrCreate(['slug' => $slug], [
+                'name' => $name,
+                'intro' => $intro,
+                'sort' => $sort++,
+                'related_category_id' => Category::where('slug', $relatedSlug)->value('id'),
+            ]);
+        }
+    }
+
+    private function seedRegions(): void
+    {
+        $regions = ['Worldwide', 'Africa', 'Europe', 'North America', 'Latin America', 'Asia-Pacific', 'Middle East'];
+
+        foreach ($regions as $index => $name) {
+            Region::firstOrCreate(['slug' => Str::slug($name)], [
+                'name' => $name,
+                'sort' => $index + 1,
+                'is_worldwide' => $name === 'Worldwide',
+            ]);
+        }
     }
 
     private function seedCategories(): void
