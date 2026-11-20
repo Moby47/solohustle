@@ -79,7 +79,10 @@ class PostForm
             ->columnSpanFull();
     }
 
-    public static function articleSection(): Section
+    /**
+     * Title, summary and text. Writers don't see the web address; it's made from the title and the owner can change it.
+     */
+    public static function articleSection(bool $withSlug = true): Section
     {
         return Section::make('Article')
             ->schema([
@@ -87,13 +90,14 @@ class PostForm
                     ->label('Title')
                     ->required()
                     ->maxLength(150)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state): void {
-                        if (blank($get('slug')) || $get('slug') === Str::slug((string) $old)) {
+                    ->live(onBlur: $withSlug)
+                    ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) use ($withSlug): void {
+                        if ($withSlug && (blank($get('slug')) || $get('slug') === Str::slug((string) $old))) {
                             $set('slug', Str::slug((string) $state));
                         }
                     }),
                 TextInput::make('slug')
+                    ->visible($withSlug)
                     ->label('Web address')
                     ->prefix(fn (Get $get): string => url('/').'/'.(Category::find($get('category_id'))?->slug ?? 'category').'/')
                     ->required()
@@ -184,28 +188,43 @@ class PostForm
                     ->searchable()
                     ->preload()
                     ->required(),
-                Select::make('category_id')
-                    ->label('Category')
-                    ->relationship('category', 'name', fn ($query) => $query->orderBy('sort'))
-                    ->preload()
-                    ->required()
-                    ->live(),
-                Select::make('tags')
-                    ->label('Tags')
-                    ->relationship('tags', 'name')
-                    ->multiple()
-                    ->searchable()
-                    ->preload()
-                    ->createOptionForm([
-                        TextInput::make('name')->label('New tag')->required()->maxLength(50),
-                    ]),
+                self::categorySelect(),
+                self::tagsSelect(canCreate: true),
                 Toggle::make('is_featured')
                     ->label('Feature on the homepage')
                     ->helperText('Featured articles appear in the "Featured guides" section.'),
             ]);
     }
 
-    private static function coverSection(): Section
+    public static function categorySelect(): Select
+    {
+        return Select::make('category_id')
+            ->label('Category')
+            ->relationship('category', 'name', fn ($query) => $query->orderBy('sort'))
+            ->preload()
+            ->required()
+            ->live();
+    }
+
+    public static function tagsSelect(bool $canCreate): Select
+    {
+        $select = Select::make('tags')
+            ->label('Tags')
+            ->relationship('tags', 'name')
+            ->multiple()
+            ->searchable()
+            ->preload();
+
+        if ($canCreate) {
+            $select->createOptionForm([
+                TextInput::make('name')->label('New tag')->required()->maxLength(50),
+            ]);
+        }
+
+        return $select;
+    }
+
+    public static function coverSection(): Section
     {
         return Section::make('Cover image')
             ->schema([

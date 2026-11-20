@@ -7,6 +7,7 @@ namespace App\Providers\Filament;
 use App\Filament\Writer\Pages\Auth\EditProfile;
 use App\Filament\Writer\Pages\Auth\Login;
 use App\Filament\Writer\Pages\Auth\Register;
+use App\Filament\Writer\Widgets\WriterStats;
 use App\Providers\Filament\Concerns\UsesSiteBranding;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -46,6 +47,7 @@ class WriterPanelProvider extends PanelProvider
             ])
             ->widgets([
                 AccountWidget::class,
+                WriterStats::class,
             ])
             ->middleware([
                 EncryptCookies::class,

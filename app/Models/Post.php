@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\PostStatus;
+use App\Filament\Writer\Resources\Posts\PostResource as WriterPostResource;
 use App\Support\ImageProcessor;
 use Database\Factories\PostFactory;
+use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 /** An article, written by the owner or a guest writer. */
@@ -164,7 +167,20 @@ class Post extends Model
      */
     public function writerUrl(): string
     {
-        return url('/writer/posts/'.$this->getKey().($this->isEditableByWriter() ? '/edit' : ''));
+        return WriterPostResource::getUrl($this->isEditableByWriter() ? 'edit' : 'view', ['record' => $this], panel: 'writer');
+    }
+
+    /**
+     * The article text as safe HTML for display.
+     */
+    public function renderedBody(): HtmlString
+    {
+        $html = RichContentRenderer::make($this->body ?? '')
+            ->fileAttachmentsDisk(config('media.disk'))
+            ->fileAttachmentsVisibility('public')
+            ->toHtml();
+
+        return new HtmlString($html);
     }
 
     /**
