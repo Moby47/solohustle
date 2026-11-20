@@ -16,5 +16,10 @@
         <div class="prose prose-lg mt-8 max-w-none sm:mt-10">
             {{ $page->renderedBody() }}
         </div>
+
+        {{-- The contact form always lives on the page with the "contact" address. --}}
+        @if ($page->slug === 'contact')
+            <x-contact-form />
+        @endif
     </article>
 </x-layouts.app>

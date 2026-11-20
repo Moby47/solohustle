@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobBoardController;
 use App\Http\Controllers\SearchController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ShowArticle;
 use App\Http\Controllers\ShowAuthor;
 use App\Http\Controllers\ShowPageOrCategory;
 use Illuminate\Support\Facades\Route;
+use Spatie\Honeypot\ProtectAgainstSpam;
 
 // A lowercase slug that isn't one of the app's own top-level addresses (admin, writer, jobs, …).
 $reserved = implode('|', array_map('preg_quote', config('site.reserved_slugs')));
@@ -18,6 +20,11 @@ $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 Route::get('/', HomeController::class)->name('home');
 Route::view('/publish', 'publish')->name('publish');
 Route::get('/search', SearchController::class)->name('search');
+
+// Public forms: honeypot + per-visitor rate limit.
+Route::middleware([ProtectAgainstSpam::class, 'throttle:public-forms'])->group(function () {
+    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+});
 Route::get('/authors/{slug}', ShowAuthor::class)->where('slug', $slug)->name('authors.show');
 
 Route::get('/jobs', [JobBoardController::class, 'index'])->name('jobs.index');
