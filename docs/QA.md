@@ -247,3 +247,14 @@ Open any sample job from `/jobs`:
 - [ ] Closed jobs never appear in search.
 - [ ] A search with no results shows "Nothing found for …" with suggestions.
 - [ ] More than 9 matching articles: page links appear at the bottom.
+
+### E2. Homepage
+- [ ] The homepage shows, in order: the top banner (tagline, headline, text, main button + second link), job search with the latest jobs, featured guides, the blue "Publish your work" box, latest articles, the featured resource, and (from E4) the newsletter box.
+- [ ] Type a keyword or pick a category in the homepage job search and press **Find jobs**: the job list opens with that filter.
+- [ ] **Site settings → Homepage**: change a section title and save: the homepage updates.
+- [ ] Switch a section off: it disappears. Switch it back on: it returns.
+- [ ] Change "How many jobs to show" / "How many articles to show": the homepage shows that many.
+- [ ] Mark an article as **Feature on the homepage**: it appears under Featured guides (and isn't repeated under Latest articles).
+- [ ] Turn on **Featured resource**, give it a title, text, image and button: it appears near the bottom.
+- [ ] Sections with nothing to show yet (no jobs, no featured articles) stay hidden instead of showing empty boxes.
+- [ ] Check the homepage at phone width.

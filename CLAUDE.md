@@ -296,7 +296,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 
 **E. Homepage, search and forms**
 - [x] E1. Scout database search on posts and jobs, header search, `/search`.
-- [ ] E2. Homepage sections, driven by settings.
+- [x] E2. Homepage sections, driven by settings.
 - [ ] E3. Contact form (store + email), Inbox resource.
 - [ ] E4. Newsletter: local subscribers, Brevo push/sync/test, CSV export.
 - [ ] E5. Dashboard widgets.
