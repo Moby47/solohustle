@@ -15,6 +15,16 @@ return [
         'integrations.brevo_api_key',
     ],
 
+    // AI crawlers the owner can allow or block in robots.txt: setting key => the crawler's user-agent name.
+    'ai_crawlers' => [
+        'gptbot' => 'GPTBot',
+        'oai_searchbot' => 'OAI-SearchBot',
+        'claudebot' => 'ClaudeBot',
+        'perplexitybot' => 'PerplexityBot',
+        'google_extended' => 'Google-Extended',
+        'ccbot' => 'CCBot',
+    ],
+
     // Social networks the owner can link to, with the name shown on the site.
     'social_platforms' => [
         'x' => 'X (Twitter)',
@@ -52,7 +62,7 @@ return [
             ],
             'jobs' => [
                 'visible' => true,
-                'title' => 'Latest remote jobs',
+                'title' => 'Latest jobs',
                 'count' => 6,
             ],
             'guides' => [
@@ -171,6 +181,22 @@ return [
                 ['title' => 'Get published', 'text' => 'The editor publishes it, asks for changes, or explains why not. You get an email either way.'],
             ],
             'cta_label' => 'Start writing',
+        ],
+
+        'ai' => [
+            // All AI crawlers are allowed by default so the site can be found and quoted by AI assistants.
+            'crawlers' => [
+                'gptbot' => true,
+                'oai_searchbot' => true,
+                'claudebot' => true,
+                'perplexitybot' => true,
+                'google_extended' => true,
+                'ccbot' => true,
+            ],
+            'llms_txt' => true,
+            'bing_verification' => null,
+            'indexnow_enabled' => false,
+            'indexnow_key' => null,
         ],
 
         'integrations' => [

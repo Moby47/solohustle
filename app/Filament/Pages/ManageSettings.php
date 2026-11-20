@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use App\Filament\Forms\LinkPicker;
+use App\Support\Brevo;
+use App\Support\IndexNow;
 use App\Support\MailSettings;
+use App\Support\Newsletter;
 use App\Support\Settings;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -71,6 +74,7 @@ class ManageSettings extends Page
                         $this->navigationTab(),
                         $this->socialTab(),
                         $this->seoTab(),
+                        $this->aiTab(),
                         $this->articleTab(),
                         $this->jobsTab(),
                         $this->publishTab(),
@@ -98,7 +102,13 @@ class ManageSettings extends Page
 
     public function save(Settings $settings): void
     {
-        $settings->save($this->form->getState());
+        $state = $this->form->getState();
+
+        // The IndexNow key isn't a form field: keep the saved one, or make one the first time IndexNow is switched on.
+        $key = $settings->get('ai.indexnow_key');
+        data_set($state, 'ai.indexnow_key', $key ?: (data_get($state, 'ai.indexnow_enabled') ? IndexNow::newKey() : null));
+
+        $settings->save($state);
 
         $this->form->fill($this->withoutSecrets($settings->all()));
 
@@ -155,6 +165,41 @@ class ManageSettings extends Page
                 ? "Email sending isn't set up yet, so the message was written to the site's log file instead of being delivered."
                 : null)
             ->send();
+    }
+
+    private function testBrevo(): void
+    {
+        $brevo = app(Brevo::class);
+
+        if (! $brevo->isConfigured()) {
+            Notification::make()->warning()->title('Add your Brevo API key and list ID, then save, first.')->send();
+
+            return;
+        }
+
+        try {
+            $account = $brevo->testConnection();
+        } catch (Throwable $exception) {
+            report($exception);
+            Notification::make()->danger()->title('Brevo said no')->body('Check the API key and try again. Details: '.$exception->getMessage())->persistent()->send();
+
+            return;
+        }
+
+        Notification::make()->success()->title("Connected to Brevo as {$account}")->send();
+    }
+
+    private function syncBrevo(): void
+    {
+        if (! app(Brevo::class)->isConfigured()) {
+            Notification::make()->warning()->title('Add your Brevo API key and list ID, then save, first.')->send();
+
+            return;
+        }
+
+        $count = app(Newsletter::class)->syncAllToBrevo();
+
+        Notification::make()->success()->title("Sending {$count} subscriber(s) to Brevo")->body('This happens in the background over the next few minutes.')->send();
     }
 
     /**
@@ -391,6 +436,42 @@ class ManageSettings extends Page
             ]);
     }
 
+    private function aiTab(): Tab
+    {
+        $crawlerToggles = collect(config('settings.ai_crawlers'))
+            ->map(fn (string $name, string $key) => Toggle::make("ai.crawlers.{$key}")->label($name))
+            ->values()
+            ->all();
+
+        return Tab::make('AI & search engines')
+            ->icon(Heroicon::OutlinedSparkles)
+            ->schema([
+                Section::make('AI assistants')
+                    ->description('Allowed assistants can read the site, so they can understand it and quote it (with a link) when people ask questions. Switch one off to block it.')
+                    ->columns(['default' => 1, 'sm' => 2, 'lg' => 3])
+                    ->schema([
+                        ...$crawlerToggles,
+                        Text::make('GPTBot / OAI-SearchBot: ChatGPT · ClaudeBot: Claude · PerplexityBot: Perplexity · Google-Extended: Google\'s AI (Gemini) · CCBot: Common Crawl, used to train many AI models.')
+                            ->columnSpanFull(),
+                    ]),
+                Toggle::make('ai.llms_txt')
+                    ->label('Publish a guide for AI assistants (/llms.txt)')
+                    ->helperText('A short, automatic list of your key pages, job pages and latest articles, written for AI assistants.'),
+                TextInput::make('ai.bing_verification')
+                    ->label('Bing Webmaster verification code')
+                    ->helperText('Paste the code, or the whole meta tag Bing gives you.')
+                    ->dehydrateStateUsing(fn (?string $state): ?string => $this->extractVerificationCode($state)),
+                Toggle::make('ai.indexnow_enabled')
+                    ->label('Tell search engines about changes instantly (IndexNow)')
+                    ->helperText(function (): string {
+                        $keyFile = app(IndexNow::class)->keyFileUrl();
+
+                        return 'Keep this off until the site launches. When on, Bing and others are told straight away when articles and jobs are published, changed or closed.'
+                            .($keyFile ? " Your key file: {$keyFile}" : '');
+                    }),
+            ]);
+    }
+
     private function articleTab(): Tab
     {
         return Tab::make('Article extras')
@@ -500,6 +581,21 @@ class ManageSettings extends Page
                     ->schema([
                         $this->secretInput('integrations.brevo_api_key', 'Brevo API key'),
                         TextInput::make('integrations.brevo_list_id')->label('List ID')->numeric(),
+                        Actions::make([
+                            Action::make('testBrevo')
+                                ->label('Test connection')
+                                ->icon(Heroicon::OutlinedSignal)
+                                ->color('gray')
+                                ->action(fn () => $this->testBrevo()),
+                            Action::make('syncBrevo')
+                                ->label('Sync subscribers to Brevo')
+                                ->icon(Heroicon::OutlinedArrowPath)
+                                ->color('gray')
+                                ->requiresConfirmation()
+                                ->modalDescription('Sends every confirmed subscriber to your Brevo list. It runs in the background and is safe to repeat.')
+                                ->action(fn () => $this->syncBrevo()),
+                        ])->key('brevoActions')->columnSpanFull(),
+                        Text::make('Save your changes first; the buttons use the saved details.')->columnSpanFull(),
                     ]),
                 Section::make('Google')
                     ->columns(2)

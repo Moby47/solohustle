@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Searchable;
 
 /** A job listing, added by hand by the owner, linking to the employer's real page. */
 #[Fillable([
@@ -28,6 +30,8 @@ class Job extends Model
 {
     /** @use HasFactory<JobFactory> */
     use HasFactory;
+
+    use Searchable;
 
     /** Open jobs not checked for this many days are flagged for the owner to re-check. */
     public const RECHECK_AFTER_DAYS = 30;
@@ -80,6 +84,22 @@ class Job extends Model
             'last_verified_at' => 'datetime',
             'closed_at' => 'datetime',
             'is_featured' => 'boolean',
+        ];
+    }
+
+    /**
+     * Site search: title and company match partial words; the summary and requirements use full-text search.
+     *
+     * @return array<string, mixed>
+     */
+    #[SearchUsingFullText(['summary', 'requirements'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'company_name' => $this->company_name,
+            'summary' => $this->summary,
+            'requirements' => $this->requirements,
         ];
     }
 

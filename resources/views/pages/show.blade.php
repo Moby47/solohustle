@@ -1,4 +1,5 @@
-<x-layouts.app :title="$page->seo_title ?: $page->title" :description="$page->meta_description" :noindex="! $page->is_published">
+<x-layouts.app :title="$page->seo_title ?: $page->title" :description="$page->meta_description" :noindex="! $page->is_published"
+                :canonical="$page->url()" :schemas="[\App\Support\StructuredData::breadcrumbs([$page->title => $page->url()])]">
     @if ($isAdmin)
         <x-admin-bar :highlight="! $page->is_published"
                      :edit-url="\App\Filament\Resources\Pages\PageResource::getUrl('edit', ['record' => $page], panel: 'admin')">
@@ -16,5 +17,10 @@
         <div class="prose prose-lg mt-8 max-w-none sm:mt-10">
             {{ $page->renderedBody() }}
         </div>
+
+        {{-- The contact form always lives on the page with the "contact" address. --}}
+        @if ($page->slug === 'contact')
+            <x-contact-form />
+        @endif
     </article>
 </x-layouts.app>

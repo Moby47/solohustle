@@ -30,6 +30,13 @@
         @endif
 
         <div class="flex items-center gap-2">
+            <a href="{{ route('search') }}" class="inline-flex size-10 items-center justify-center rounded-md text-ink no-underline hover:bg-surface hover:text-primary" title="Search">
+                <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+                <span class="sr-only">Search</span>
+            </a>
+
             @if (filled($ctaLabel) && filled($ctaLink))
                 <a href="{{ NavLink::href($ctaLink) }}" class="hidden rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white no-underline transition-colors hover:bg-primary-dark sm:inline-flex">
                     {{ $ctaLabel }}
@@ -63,6 +70,11 @@
                     </button>
                 </div>
                 <nav aria-label="Main" class="flex-1 overflow-y-auto px-2 py-4">
+                    <form method="GET" action="{{ route('search') }}" role="search" class="mb-4 px-2">
+                        <label for="menu-search" class="sr-only">Search jobs and articles</label>
+                        <input id="menu-search" type="search" name="q" placeholder="Search jobs and articles"
+                               class="block w-full rounded-md border border-line px-3 py-2.5 text-ink placeholder:text-muted focus:border-primary focus:outline-none">
+                    </form>
                     <ul class="space-y-1">
                         @foreach ($menu as $item)
                             @php($active = NavLink::isActive($item['link']))

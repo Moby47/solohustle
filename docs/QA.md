@@ -234,3 +234,127 @@ Open any sample job from `/jobs`:
 - [ ] Change a job's category in the dashboard: the old address redirects to the new one.
 - [ ] The sample article (`/career/find-your-first-remote-job`) shows "Ready to put this into practice?" with links to the job categories linked to Career.
 - [ ] Optional: paste a job address into Google's Rich Results Test (https://search.google.com/test/rich-results) once the site is live, to confirm the job data is valid.
+
+---
+
+## E. Homepage, search and forms
+
+### E1. Search
+- [ ] The header has a magnifying-glass button on every page; the phone menu has a search box at the top.
+- [ ] `/search` with nothing typed suggests "All jobs" and the blog categories.
+- [ ] Search for part of an article title (e.g. `remot`) and for a word that only appears inside an article's text: both find it. Drafts never appear.
+- [ ] Search for a company name or a word from a job summary: matching **open** jobs appear above the articles, with "See all matching jobs" (opens the job list with that keyword).
+- [ ] Closed jobs never appear in search.
+- [ ] A search with no results shows "Nothing found for …" with suggestions.
+- [ ] More than 9 matching articles: page links appear at the bottom.
+
+### E2. Homepage
+- [ ] The homepage shows, in order: the top banner (tagline, headline, text, main button + second link), job search with the latest jobs, featured guides, the blue "Publish your work" box, latest articles, the featured resource, and (from E4) the newsletter box.
+- [ ] Type a keyword or pick a category in the homepage job search and press **Find jobs**: the job list opens with that filter.
+- [ ] **Site settings → Homepage**: change a section title and save: the homepage updates.
+- [ ] Switch a section off: it disappears. Switch it back on: it returns.
+- [ ] Change "How many jobs to show" / "How many articles to show": the homepage shows that many.
+- [ ] Mark an article as **Feature on the homepage**: it appears under Featured guides (and isn't repeated under Latest articles).
+- [ ] Turn on **Featured resource**, give it a title, text, image and button: it appears near the bottom.
+- [ ] Sections with nothing to show yet (no jobs, no featured articles) stay hidden instead of showing empty boxes.
+- [ ] Check the homepage at phone width.
+
+### E3. Contact form and Inbox
+- [ ] `/contact` shows the page text and a **Send us a message** form below it.
+- [ ] Send it empty: each field shows a friendly message in red, and what you typed is kept.
+- [ ] Send a real message: a green "Thanks, … Your message has been sent" appears in place of the form.
+- [ ] Run `php artisan queue:work --stop-when-empty`: an email "New message: …" goes to the address in **Site settings → General → Send contact-form messages to**; replying to it answers the visitor.
+- [ ] Sending more than 5 messages within a minute is blocked ("Too many requests"); after a minute it works again.
+- [ ] Dashboard → **People → Inbox**: the menu shows a count of unread messages; unread messages are bold with an envelope icon.
+- [ ] Open a message: full text, name, email (click to copy), date; it is now marked read.
+- [ ] **Reply by email** opens your email app with "Re: subject" filled in.
+- [ ] **Mark as unread** takes you back to the Inbox with that message bold again.
+- [ ] Tabs **All / Unread**, search, the Read/Unread filter, and bulk mark read / unread / delete all work.
+
+### E4. Newsletter
+Sign-up:
+- [ ] The homepage (bottom) and every article (blue box at the end) have an email box with **Subscribe** and "We'll email you a link to confirm".
+- [ ] Enter a bad email: "That email address doesn't look right." under the box, on the same form you used.
+- [ ] Enter a real email: "Almost done! Check your inbox…" replaces the form.
+- [ ] Run `php artisan queue:work --stop-when-empty`, then open the confirmation email in `storage/logs/laravel.log` and click **Yes, subscribe me**: a "You're subscribed!" page.
+- [ ] Open the same confirmation link 8+ days later (or change one letter in it): a friendly "This link has expired" page with a fresh sign-up box.
+- [ ] Signing up again with the same email never creates a duplicate.
+
+Dashboard → **People → Subscribers**:
+- [ ] Each subscriber shows email, name, status (Waiting for confirmation / Subscribed / Unsubscribed), where they signed up, "In Brevo", and when they joined. The Status filter works.
+- [ ] **Download CSV** downloads a spreadsheet of all subscribers with their status.
+- [ ] Delete a subscriber: it warns that they're also removed from Brevo (if connected).
+
+Brevo (optional: needs a free Brevo account):
+- [ ] **Site settings → Integrations → Newsletter**: with nothing filled in, **Test connection** says to add the API key and list ID first.
+- [ ] Add a real Brevo API key and list ID, save, **Test connection**: "Connected to Brevo as …". A wrong key gives a clear error.
+- [ ] Confirm a new subscription: after the queue runs, the contact appears in your Brevo list and "In Brevo" turns green.
+- [ ] **Sync subscribers to Brevo** sends every confirmed subscriber (safe to repeat).
+- [ ] Unsubscribe link (`/newsletter/unsubscribe/…`, from a signed link) removes them from the Brevo list too.
+
+### E5. Owner dashboard
+Dashboard home (`/admin`):
+- [ ] **Quick add** box with **New job**, **New article** and **View site** buttons.
+- [ ] Four boxes: **Articles to review**, **Jobs to re-check**, **Unread messages**, **New subscribers** (confirmed in the last 7 days). Each is yellow/blue when something needs you and green when all is done.
+- [ ] Clicking each box opens the right list, already on the right tab (Awaiting review / Needs re-check / Unread).
+- [ ] When a writer submits an article, an **Awaiting your review** list appears (oldest first) with a **Review** button; it disappears when nothing is waiting.
+
+---
+
+## F. SEO, AI search and speed
+
+### F1. Search engine basics
+Tip: in Chrome, right-click a page → **View page source** to see these tags; or use https://search.google.com/test/rich-results once the site is live.
+- [ ] Each page's browser tab title ends with " | Solo Hustle" (from **Site settings → SEO defaults → Title ending**).
+- [ ] Share an article link in WhatsApp/LinkedIn/X (live site): it shows the title, summary and cover image. Pages without an image use the **Default share image**.
+- [ ] Until launch, page source contains `noindex, nofollow` on every page. Turn off **Ask search engines not to list the site** and it disappears (except on drafts, closed jobs and search results).
+- [ ] Page source on an article contains Article, BreadcrumbList and (if it has FAQs) FAQPage data; on a job: JobPosting and BreadcrumbList; on an author page: Person; on every page: Organization and WebSite (with search).
+- [ ] An article's "Updated" date matches its `dateModified` in the page source.
+- [ ] `/sitemap.xml` lists the homepage, job pages, open jobs, pages, categories, published articles and author pages, but no drafts or closed jobs. It is rebuilt every night.
+- [ ] **Site settings → Integrations → Search Console code**: after saving, page source contains `google-site-verification`.
+- [ ] Live site only: with a **Google Analytics ID** saved, a slim cookie bar appears at the bottom; nothing is tracked until **Accept**. **Decline** hides it for good; the footer's **Cookie settings** link brings it back. Without an ID there is no bar.
+
+### F2. AI assistants and search engines
+Dashboard → **Site settings → AI & search engines**:
+- [ ] Six switches (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot), all on, with a plain explanation of who each one is.
+- [ ] Before launch, `/robots.txt` says `Disallow: /` for everyone.
+- [ ] Turn off **Ask search engines not to list the site** (SEO defaults): `/robots.txt` now allows the site, hides `/admin` and `/writer`, and links the sitemap.
+- [ ] Switch off GPTBot and save: `/robots.txt` now has a `User-agent: GPTBot / Disallow: /` block. Switch it back on: the block disappears.
+- [ ] `/llms.txt` lists the site name and description, key pages, job pages, blog topics and the latest 20 articles. Publish an article: it appears straight away. Switch the guide off: `/llms.txt` shows "not found".
+- [ ] Paste a Bing verification meta tag and save: only the code is kept, and page source shows `msvalidate.01`.
+- [ ] Switch **IndexNow** on and save: the helper text now shows "Your key file: …/xxxxxxxx.txt", and that address shows the key. (Pings are only sent from the live site.)
+- [ ] Turn the site-wide "discourage" switch back on afterwards if the site isn't launched yet.
+
+### F3. Speed
+- [ ] Visit any public page twice while logged out: the second load is noticeably quick (developer: the response has an `X-Page-Cache: hit` header).
+- [ ] Edit a page, article, job, category or a writer's name in the dashboard: the public page shows the change immediately (the cache clears itself).
+- [ ] Change any Site setting: every page reflects it immediately.
+- [ ] Logged in as owner, pages are never cached (you always see the "Edit in dashboard" bar).
+- [ ] Contact and newsletter forms still work on cached pages, and their thank-you / error messages always appear.
+- [ ] Images in article text load only as you scroll down to them.
+- [ ] Lighthouse (Chrome → right-click → Inspect → **Lighthouse** tab → Mobile → Analyze) on the homepage, `/jobs`, a job page and an article: Performance, Accessibility, Best practices and SEO should each be 90+. (SEO shows lower until the "discourage search engines" switch is turned off at launch.)
+
+---
+
+## G. Content and QA
+
+### G1. Demo content
+- [ ] Developer: `php artisan migrate:fresh --seed` gives a full local site (this wipes local data first). On an existing database, `php artisan db:seed --class=DemoSeeder` adds the demo content once.
+- [ ] Logins: `admin@solohustle.test` / `password` (owner) and `writer@solohustle.test` / `password` (writer).
+- [ ] The homepage shows featured guides, latest articles and latest jobs, all with colourful placeholder images (made on your computer, not downloaded).
+- [ ] 4 writers with photos and bios; their author pages work.
+- [ ] Articles in every status: published, awaiting review (2), changes requested, drafts, rejected. Some have quick answers, FAQs and sources.
+- [ ] 30 jobs: some featured, some with closing dates, 5 closed, several flagged "Needs re-check"; half have logos.
+- [ ] A few subscribers (subscribed, waiting, unsubscribed) and inbox messages (2 unread).
+- [ ] Click through the whole public site: every menu, footer link, card, breadcrumb and button goes somewhere sensible. (Developer: an automated crawl of all 122 public addresses found no broken links, images or styles.)
+
+### G2. Full test pass (phone, tablet, desktop)
+Developer checks already done (Nov 2026): 227 automated tests pass; a crawl of all 122 public addresses found no broken links, images or styles; key pages were checked in screenshots at phone (390px), tablet (768px) and desktop (1280px) widths. That pass found and fixed: job filters stopping after the first visit (page cache), misaligned article header on desktop, and a misleading "Latest remote jobs" title.
+
+Please still check by hand, on a real phone, a tablet and a computer:
+- [ ] Every page in this checklist at all three sizes: nothing overlaps, nothing is cut off, no sideways scrolling.
+- [ ] Every form: writer sign-up, login, password reset, profile, article editor, submit for review, contact, newsletter, all Site settings tabs.
+- [ ] Every job filter combination you can think of, plus Clear filters and paging.
+- [ ] A handful of **Apply now** buttons open the employer's page in a new tab.
+- [ ] The mobile menu, search, and the cookie bar (live site with GA set).
+- [ ] Lighthouse (see F3) on home, `/jobs`, a job page and an article: 90+ on mobile.

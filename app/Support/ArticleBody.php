@@ -46,6 +46,12 @@ final class ArticleBody
         $h2Count = 0;
         $breakBefore = null;
 
+        // Images inside the text load only as the reader scrolls to them.
+        foreach ($root->getElementsByTagName('img') as $image) {
+            $image->setAttribute('loading', 'lazy');
+            $image->setAttribute('decoding', 'async');
+        }
+
         foreach ($root->childNodes as $node) {
             if (! $node instanceof DOMElement || ! in_array($node->tagName, ['h2', 'h3'], true)) {
                 continue;

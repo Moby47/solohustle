@@ -7,7 +7,7 @@
 - **After each sub-step, in this order**:
   1. Run Pint and the tests.
   2. Commit to `staging` and push.
-  3. Tick the sub-step in **Progress** below, add its browser checks to `docs/QA.md` (same style: short checkbox steps), and commit both.
+  3. Tick the sub-step in **Progress** below, add its browser checks to `docs/QA.md` (same style: short checkbox steps), rebuild the client PDF with `php docs/build-qa-pdf.php`, and commit all three.
   4. Tell Henry, briefly, what changed and what to test in the browser.
   5. **Stop and wait for his OK.** Do not start the next sub-step on your own.
 - **End of a group** (all of A, all of B, …): ask "Group X done. Merge `staging` into `main` and push?" Merge only on a yes, and use `--no-ff`.
@@ -59,7 +59,7 @@ Client brief: `docs/Solo_Hustle_Website_Build_Brief.pdf`.
 - Search: Laravel Scout, `database` driver, using MySQL FULLTEXT. It can be swapped for Meilisearch later with no code changes.
 - Queue and cache: `database` driver.
 - Images: Intervention Image v3. Convert uploads to WebP and make sized variants.
-- Other packages: `spatie/laravel-sitemap`, `spatie/laravel-honeypot`, `spatie/laravel-responsecache`.
+- Other packages: `spatie/laravel-honeypot`, `spatie/laravel-responsecache`. The sitemap is built in-house (`App\Support\SitemapBuilder`) because no `spatie/laravel-sitemap` release supports both PHP 8.3 and Laravel 13.
 - Tests: Pest.
 
 ## Portability (must run on Namecheap shared *or* Heroku)
@@ -131,7 +131,7 @@ Writer registration is protected by honeypot, throttling and required email veri
   - *Integrations*. All optional; leave a field empty and that feature is simply off:
     - **Email sending (Brevo SMTP)**: host, port, username, password, from address, from name, plus a "Send test email" button. While empty, use the `.env` mailer: `log` locally, `sendmail` on Namecheap.
     - **Newsletter (Brevo)**: API key and list ID, plus "Test connection" and "Sync subscribers to Brevo" buttons.
-    - **Google Analytics**: GA4 Measurement ID. The script is output only when it's set and the app is in production.
+    - **Google Analytics**: GA4 Measurement ID. The script is output only when it's set and the app is in production, and only after the visitor accepts a slim, non-blocking cookie consent bar (Accept / Decline, choice remembered; the bar only appears when GA is set). (Henry, 2026-11-21)
     - **Google Search Console**: verification code. The meta tag is output only when set.
   - Secrets use encrypted casts and are never shown back in full.
 - Settings are cached and the cache is cleared on save. A service provider applies the mail settings to `config('mail…')` at boot.
@@ -146,7 +146,7 @@ Writer registration is protected by honeypot, throttling and required email veri
 - **jobs** (table `job_listings`, because the queue uses `jobs`): title, slug, company_name, company_url, company_logo (nullable), job_category_id, region_id, country_code (nullable), location_note, work_mode (`remote`/`hybrid`/`onsite`), employment_type (`full_time`/`part_time`/`contract`/`freelance`/`internship`), experience_level (`entry`/`mid`/`senior`/`any`), summary, requirements (one per line), salary_text (nullable), apply_url, source_name, source_url, posted_at, last_verified_at, closes_at (nullable), status (`open`/`closed`), closed_at, is_featured, seo_title, meta_description
 - **pages**: title, slug, body, seo_title, meta_description, is_published. Seed: About, Contact, Editorial Policy, Privacy Policy, Terms, Creator Guidelines, Advertise
 - **contact_messages**: name, email, subject, message, read_at
-- **subscribers**: email (unique), name (nullable), source, brevo_synced_at (nullable), unsubscribed_at. Always stored locally; pushed to Brevo (queued) when it's configured.
+- **subscribers**: email (unique), name (nullable), source, confirmed_at (nullable), brevo_synced_at (nullable), unsubscribed_at. Always stored locally; pushed to Brevo (queued) when it's configured. **Double opt-in**: a confirmation email must be clicked before a subscriber is active or sent to Brevo. (Henry, 2026-11-21)
 - **redirects**: from_path (unique), to_path, hits
 - **settings**: key/value (JSON), cached
 
@@ -295,19 +295,19 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] D4. Job detail, JobPosting JSON-LD, closed-job handling.
 
 **E. Homepage, search and forms**
-- [ ] E1. Scout database search on posts and jobs, header search, `/search`.
-- [ ] E2. Homepage sections, driven by settings.
-- [ ] E3. Contact form (store + email), Inbox resource.
-- [ ] E4. Newsletter: local subscribers, Brevo push/sync/test, CSV export.
-- [ ] E5. Dashboard widgets.
+- [x] E1. Scout database search on posts and jobs, header search, `/search`.
+- [x] E2. Homepage sections, driven by settings.
+- [x] E3. Contact form (store + email), Inbox resource.
+- [x] E4. Newsletter: local subscribers, Brevo push/sync/test, CSV export.
+- [x] E5. Dashboard widgets.
 
 **F. SEO, AEO/GEO and speed**
-- [ ] F1. `<x-seo>`, sitemap, Organization/WebSite/Article/FAQ structured data, GA4 / Search Console / Bing output from settings.
-- [ ] F2. AEO/GEO: AI & search engines settings tab, dynamic `robots.txt` with AI crawler switches, `/llms.txt`, IndexNow.
+- [x] F1. `<x-seo>`, sitemap, Organization/WebSite/Article/FAQ structured data, GA4 / Search Console / Bing output from settings.
+- [x] F2. AEO/GEO: AI & search engines settings tab, dynamic `robots.txt` with AI crawler switches, `/llms.txt`, IndexNow.
 - [ ] F3. Response cache + busting, image `srcset`, indexes, eager loading, Lighthouse pass.
 
 **G. Content and QA**
-- [ ] G1. `DemoSeeder` with placeholder images; full local click-through.
+- [x] G1. `DemoSeeder` with placeholder images; full local click-through.
 - [ ] G2. Full test pass: every form, link, filter and apply link, on phone, tablet and desktop.
 
 **H. Launch**
