@@ -324,3 +324,12 @@ Dashboard → **Site settings → AI & search engines**:
 - [ ] Paste a Bing verification meta tag and save: only the code is kept, and page source shows `msvalidate.01`.
 - [ ] Switch **IndexNow** on and save: the helper text now shows "Your key file: …/xxxxxxxx.txt", and that address shows the key. (Pings are only sent from the live site.)
 - [ ] Turn the site-wide "discourage" switch back on afterwards if the site isn't launched yet.
+
+### F3. Speed
+- [ ] Visit any public page twice while logged out: the second load is noticeably quick (developer: the response has an `X-Page-Cache: hit` header).
+- [ ] Edit a page, article, job, category or a writer's name in the dashboard: the public page shows the change immediately (the cache clears itself).
+- [ ] Change any Site setting: every page reflects it immediately.
+- [ ] Logged in as owner, pages are never cached (you always see the "Edit in dashboard" bar).
+- [ ] Contact and newsletter forms still work on cached pages, and their thank-you / error messages always appear.
+- [ ] Images in article text load only as you scroll down to them.
+- [ ] Lighthouse (Chrome → right-click → Inspect → **Lighthouse** tab → Mobile → Analyze) on the homepage, `/jobs`, a job page and an article: Performance, Accessibility, Best practices and SEO should each be 90+. (SEO shows lower until the "discourage search engines" switch is turned off at launch.)
