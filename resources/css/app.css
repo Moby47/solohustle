@@ -1,9 +1,43 @@
+@import '@fontsource-variable/inter';
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Brand blue is the anchor colour; yellow is for sparing highlights only. */
+    --color-primary: #0750a1;
+    --color-primary-dark: #053c79;
+    --color-primary-light: #e6eef7;
+    --color-accent: #f5d522;
+    --color-secondary: #b99bd8;
+    --color-secondary-light: #f3eefa;
+    --color-ink: #1f2933;
+    --color-muted: #52606d;
+    --color-surface: #f2f5f9;
+    --color-line: #dde3ea;
+}
+
+@layer base {
+    html {
+        @apply bg-white font-sans text-ink antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        @apply font-bold tracking-tight text-ink;
+    }
+
+    a {
+        @apply text-primary;
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-primary;
+    }
 }
