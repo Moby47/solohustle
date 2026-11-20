@@ -15,6 +15,20 @@ return [
         'integrations.brevo_api_key',
     ],
 
+    // Social networks the owner can link to, with the name shown on the site.
+    'social_platforms' => [
+        'x' => 'X (Twitter)',
+        'facebook' => 'Facebook',
+        'linkedin' => 'LinkedIn',
+        'instagram' => 'Instagram',
+        'youtube' => 'YouTube',
+        'tiktok' => 'TikTok',
+        'threads' => 'Threads',
+        'pinterest' => 'Pinterest',
+        'medium' => 'Medium',
+        'substack' => 'Substack',
+    ],
+
     'defaults' => [
 
         'general' => [
@@ -131,6 +145,23 @@ return [
             'mid_cta_label' => 'Browse jobs',
             'mid_cta_link' => '/jobs',
             'newsletter_text' => 'Get new guides and jobs by email. One short email a week.',
+        ],
+
+        'publish' => [
+            'headline' => 'Publish your work on Solo Hustle',
+            'intro' => 'Share what you know with people building independent careers. Every article is reviewed by an editor and published under your name, so it makes a strong portfolio sample.',
+            'benefits' => [
+                ['title' => 'A real portfolio piece', 'text' => 'Your article is published under your name, with your photo, bio and links on your own author page.'],
+                ['title' => 'Honest editorial feedback', 'text' => 'An editor reads every submission and tells you what works and what to improve.'],
+                ['title' => 'The right readers', 'text' => 'Remote workers, freelancers and writers looking for practical, honest advice.'],
+            ],
+            'steps' => [
+                ['title' => 'Sign up', 'text' => 'Create a free writer account and confirm your email address.'],
+                ['title' => 'Write', 'text' => 'Draft your article in the writer area. It saves as you go and only you can see it.'],
+                ['title' => 'Submit', 'text' => 'Send it for review when it\'s ready, confirming it\'s your own original work.'],
+                ['title' => 'Get published', 'text' => 'The editor publishes it, asks for changes, or explains why not. You get an email either way.'],
+            ],
+            'cta_label' => 'Start writing',
         ],
 
         'integrations' => [

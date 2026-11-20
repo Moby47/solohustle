@@ -28,6 +28,12 @@ class EditPost extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('view')
+                ->label(fn (): string => $this->record->status === PostStatus::Published ? 'View on site' : 'Preview')
+                ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
+                ->color('gray')
+                ->url(fn (): string => $this->record->url())
+                ->openUrlInNewTab(),
             Action::make('publish')
                 ->label('Publish as is')
                 ->icon(Heroicon::OutlinedCheckCircle)
