@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Writer\Pages\Auth;
 
+use App\Support\ImageProcessor;
 use Filament\Auth\Pages\EditProfile as BaseEditProfile;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 /** The writer's account details plus the public author profile shown on their author page. */
 class EditProfile extends BaseEditProfile
@@ -30,13 +32,17 @@ class EditProfile extends BaseEditProfile
                 ->schema([
                     FileUpload::make('photo')
                         ->label('Photo')
-                        ->helperText('A clear head-and-shoulders photo works best. Max 2 MB.')
+                        ->helperText('A clear head-and-shoulders photo works best. Max 5 MB. It is cropped square automatically.')
                         ->image()
                         ->avatar()
+                        ->imageEditor()
+                        ->imageAspectRatio('1:1')
+                        ->automaticallyCropImagesToAspectRatio()
                         ->disk(config('media.disk'))
-                        ->directory('authors')
                         ->visibility('public')
-                        ->maxSize(2048),
+                        ->maxSize(5120)
+                        ->saveUploadedFileUsing(fn (TemporaryUploadedFile $file): string => app(ImageProcessor::class)
+                            ->storeCropped($file, 'authors', 400, 400)),
                     TextInput::make('headline')
                         ->label('Headline')
                         ->helperText('One line about you, e.g. "Freelance SEO writer for SaaS brands".')

@@ -1,0 +1,235 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\Resources\Posts\Schemas;
+
+use App\Enums\PostStatus;
+use App\Models\Category;
+use App\Models\Post;
+use App\Support\ImageProcessor;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+
+/** The owner's article editor: writing on the left, settings on the right. */
+class PostForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->columns(3)
+            ->components([
+                Group::make()
+                    ->columnSpan(2)
+                    ->schema([
+                        self::articleSection(),
+                        self::answerBoxesSection(),
+                    ]),
+                Group::make()
+                    ->columnSpan(1)
+                    ->schema([
+                        self::publishingSection(),
+                        self::coverSection(),
+                        self::seoSection(),
+                    ]),
+            ]);
+    }
+
+    public static function articleSection(): Section
+    {
+        return Section::make('Article')
+            ->schema([
+                TextInput::make('title')
+                    ->label('Title')
+                    ->required()
+                    ->maxLength(150)
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state): void {
+                        if (blank($get('slug')) || $get('slug') === Str::slug((string) $old)) {
+                            $set('slug', Str::slug((string) $state));
+                        }
+                    }),
+                TextInput::make('slug')
+                    ->label('Web address')
+                    ->prefix(fn (Get $get): string => url('/').'/'.(Category::find($get('category_id'))?->slug ?? 'category').'/')
+                    ->required()
+                    ->maxLength(150)
+                    ->regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/')
+                    ->validationMessages(['regex' => 'Use only lowercase letters, numbers and dashes.'])
+                    ->unique(ignoreRecord: true)
+                    ->helperText('Filled in from the title. Changing it on a live article automatically redirects the old address.'),
+                Textarea::make('excerpt')
+                    ->label('Summary')
+                    ->helperText('One or two sentences shown on article cards and under the title.')
+                    ->rows(2)
+                    ->maxLength(300),
+                RichEditor::make('body')
+                    ->label('Article text')
+                    ->helperText('Tip: phrase headings as questions where natural, answer straight away, keep paragraphs short, use lists and tables, give real examples and link to your sources.')
+                    ->fileAttachmentsDisk(config('media.disk'))
+                    ->fileAttachmentsVisibility('public')
+                    ->saveUploadedFileAttachmentUsing(fn (TemporaryUploadedFile $file): string => app(ImageProcessor::class)
+                        ->storeScaled($file, 'posts', 1600))
+                    ->extraInputAttributes(['style' => 'min-height: 32rem']),
+            ]);
+    }
+
+    public static function answerBoxesSection(): Section
+    {
+        return Section::make('Answer boxes')
+            ->description('Optional. They help readers, Google and AI assistants find and quote the answer quickly.')
+            ->collapsible()
+            ->schema([
+                Textarea::make('quick_answer')
+                    ->label('Quick answer')
+                    ->helperText('A direct 40–60 word answer to the article\'s main question. Shown in a box under the title.')
+                    ->rows(3)
+                    ->maxLength(600)
+                    ->live(debounce: 500)
+                    ->hint(fn (?string $state): ?string => self::wordCountHint($state))
+                    ->hintColor(fn (?string $state): string => self::isQuickAnswerLengthGood($state) ? 'success' : 'warning'),
+                Textarea::make('key_takeaway')
+                    ->label('Key takeaway')
+                    ->helperText('The one thing readers should remember. Shown near the end.')
+                    ->rows(2)
+                    ->maxLength(400),
+                Repeater::make('faqs')
+                    ->label('Frequently asked questions')
+                    ->helperText('Real questions readers ask, each with a short answer. Shown near the end and marked up for Google.')
+                    ->schema([
+                        TextInput::make('question')->label('Question')->required()->maxLength(200),
+                        Textarea::make('answer')->label('Answer')->required()->rows(3)->maxLength(1000),
+                    ])
+                    ->itemLabel(fn (array $state): ?string => $state['question'] ?? null)
+                    ->collapsible()
+                    ->reorderable()
+                    ->defaultItems(0)
+                    ->addActionLabel('Add a question'),
+                Repeater::make('sources')
+                    ->label('Sources')
+                    ->helperText('Studies, data or pages you relied on. Shown as a numbered list at the end.')
+                    ->schema([
+                        TextInput::make('title')->label('Name')->required()->maxLength(200),
+                        TextInput::make('url')->label('Link')->required()->url()->rule('url:http,https')->maxLength(500),
+                    ])
+                    ->columns(2)
+                    ->reorderable()
+                    ->defaultItems(0)
+                    ->addActionLabel('Add a source'),
+            ]);
+    }
+
+    private static function publishingSection(): Section
+    {
+        return Section::make('Publishing')
+            ->schema([
+                Select::make('status')
+                    ->label('Status')
+                    ->options(PostStatus::class)
+                    ->default(PostStatus::Draft)
+                    ->required()
+                    ->native(false),
+                DateTimePicker::make('published_at')
+                    ->label('Publish date')
+                    ->helperText('Set automatically when you publish. Pick a future date to schedule it.')
+                    ->seconds(false),
+                Select::make('author_id')
+                    ->label('Author')
+                    ->relationship('author', 'name')
+                    ->default(fn (): ?int => auth()->id())
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Select::make('category_id')
+                    ->label('Category')
+                    ->relationship('category', 'name', fn ($query) => $query->orderBy('sort'))
+                    ->preload()
+                    ->required()
+                    ->live(),
+                Select::make('tags')
+                    ->label('Tags')
+                    ->relationship('tags', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm([
+                        TextInput::make('name')->label('New tag')->required()->maxLength(50),
+                    ]),
+                Toggle::make('is_featured')
+                    ->label('Feature on the homepage')
+                    ->helperText('Featured articles appear in the "Featured guides" section.'),
+            ]);
+    }
+
+    private static function coverSection(): Section
+    {
+        return Section::make('Cover image')
+            ->schema([
+                FileUpload::make('cover_image')
+                    ->hiddenLabel()
+                    ->helperText('Landscape, at least 1600 × 900 pixels. It is cropped to 16:9 and optimised automatically.')
+                    ->image()
+                    ->imageEditor()
+                    ->imageAspectRatio('16:9')
+                    ->automaticallyCropImagesToAspectRatio()
+                    ->maxSize(8192)
+                    ->disk(config('media.disk'))
+                    ->visibility('public')
+                    ->saveUploadedFileUsing(fn (TemporaryUploadedFile $file): string => app(ImageProcessor::class)
+                        ->storeCropped($file, 'covers', Post::COVER_WIDTH, Post::COVER_HEIGHT, Post::COVER_SMALLER_WIDTHS)),
+                TextInput::make('cover_alt')
+                    ->label('Image description')
+                    ->helperText('Describe the picture for people who can\'t see it, e.g. "Woman working on a laptop at a kitchen table".')
+                    ->requiredWith('cover_image')
+                    ->validationMessages(['required_with' => 'Please describe the image.'])
+                    ->maxLength(200),
+            ]);
+    }
+
+    private static function seoSection(): Section
+    {
+        return Section::make('Search engines')
+            ->description('Optional. Leave empty to use the title and summary.')
+            ->collapsed()
+            ->schema([
+                TextInput::make('seo_title')
+                    ->label('Title in search results')
+                    ->maxLength(70)
+                    ->helperText('Up to about 60 characters.'),
+                Textarea::make('meta_description')
+                    ->label('Description in search results')
+                    ->rows(3)
+                    ->maxLength(160)
+                    ->helperText('One or two sentences, up to 160 characters.'),
+            ]);
+    }
+
+    private static function wordCountHint(?string $text): ?string
+    {
+        if (blank($text)) {
+            return null;
+        }
+
+        return str_word_count($text).' words (aim for 40–60)';
+    }
+
+    private static function isQuickAnswerLengthGood(?string $text): bool
+    {
+        $words = str_word_count((string) $text);
+
+        return $words >= 40 && $words <= 60;
+    }
+}
