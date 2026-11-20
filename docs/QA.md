@@ -347,3 +347,14 @@ Dashboard → **Site settings → AI & search engines**:
 - [ ] 30 jobs: some featured, some with closing dates, 5 closed, several flagged "Needs re-check"; half have logos.
 - [ ] A few subscribers (subscribed, waiting, unsubscribed) and inbox messages (2 unread).
 - [ ] Click through the whole public site: every menu, footer link, card, breadcrumb and button goes somewhere sensible. (Developer: an automated crawl of all 122 public addresses found no broken links, images or styles.)
+
+### G2. Full test pass (phone, tablet, desktop)
+Developer checks already done (Nov 2026): 227 automated tests pass; a crawl of all 122 public addresses found no broken links, images or styles; key pages were checked in screenshots at phone (390px), tablet (768px) and desktop (1280px) widths. That pass found and fixed: job filters stopping after the first visit (page cache), misaligned article header on desktop, and a misleading "Latest remote jobs" title.
+
+Please still check by hand, on a real phone, a tablet and a computer:
+- [ ] Every page in this checklist at all three sizes: nothing overlaps, nothing is cut off, no sideways scrolling.
+- [ ] Every form: writer sign-up, login, password reset, profile, article editor, submit for review, contact, newsletter, all Site settings tabs.
+- [ ] Every job filter combination you can think of, plus Clear filters and paging.
+- [ ] A handful of **Apply now** buttons open the employer's page in a new tab.
+- [ ] The mobile menu, search, and the cookie bar (live site with GA set).
+- [ ] Lighthouse (see F3) on home, `/jobs`, a job page and an article: 90+ on mobile.
