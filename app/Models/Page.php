@@ -49,7 +49,12 @@ class Page extends Model
      */
     public function renderedBody(): HtmlString
     {
-        $html = RichContentRenderer::make($this->body ?? '')
+        // The renderer fails on empty content, and a new page may have no text yet.
+        if (blank($this->body)) {
+            return new HtmlString('');
+        }
+
+        $html = RichContentRenderer::make($this->body)
             ->fileAttachmentsDisk(config('media.disk'))
             ->fileAttachmentsVisibility('public')
             ->toHtml();

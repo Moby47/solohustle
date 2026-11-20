@@ -279,11 +279,11 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] B4. Pages (edit/add, public route), Redirects (resource + middleware), `EssentialsSeeder`.
 
 **C. Blog**
-- [ ] C1. Categories, tags, posts: models, enums, Policy, admin resources, editor, WebP covers, SEO fields, quick answer / FAQs / sources fields with helper text.
-- [ ] C2. Review flow (accept / accept with edits / ask for changes / reject), queued emails, slug redirects.
-- [ ] C3. Writer side: own posts, edit rules, submit with the two confirmations, status and notes.
-- [ ] C4. Admin Writers resource with suspend/unsuspend.
-- [ ] C5. Public: article template (quick answer, FAQs, sources), category pages, author pages with Person data, `/publish`, header/footer from Navigation settings.
+- [x] C1. Categories, tags, posts: models, enums, Policy, admin resources, editor, WebP covers, SEO fields, quick answer / FAQs / sources fields with helper text.
+- [x] C2. Review flow (accept / accept with edits / ask for changes / reject), queued emails, slug redirects.
+- [x] C3. Writer side: own posts, edit rules, submit with the two confirmations, status and notes.
+- [x] C4. Admin Writers resource with suspend/unsuspend.
+- [x] C5. Public: article template (quick answer, FAQs, sources), category pages, author pages with Person data, `/publish`, header/footer from Navigation settings.
 
 **D. Jobs**
 - [ ] D1. Job categories, regions, jobs: models, enums, admin resource, Duplicate / Mark verified / Close-Reopen actions.

@@ -8,6 +8,9 @@ return [
     'admin_email' => env('ADMIN_EMAIL', 'admin@solohustle.test'),
     'admin_password' => env('ADMIN_PASSWORD'),
 
+    // A guest article must be at least this long to be submitted for review.
+    'min_submission_words' => 300,
+
     // Top-level addresses used by the app itself, so pages and categories can't take them.
     'reserved_slugs' => [
         'admin', 'api', 'authors', 'build', 'category', 'css', 'email', 'feed', 'filament', 'fonts', 'jobs',

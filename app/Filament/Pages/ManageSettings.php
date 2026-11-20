@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
-use App\Rules\SiteLink;
+use App\Filament\Forms\LinkPicker;
 use App\Support\MailSettings;
 use App\Support\Settings;
 use BackedEnum;
@@ -71,6 +71,7 @@ class ManageSettings extends Page
                         $this->socialTab(),
                         $this->seoTab(),
                         $this->articleTab(),
+                        $this->publishTab(),
                         $this->integrationsTab(),
                     ]),
             ]);
@@ -325,7 +326,7 @@ class ManageSettings extends Page
     }
 
     /**
-     * @return array<int, TextInput>
+     * @return array<int, TextInput|Select>
      */
     private function menuLinkFields(): array
     {
@@ -344,18 +345,7 @@ class ManageSettings extends Page
                     ->hiddenLabel()
                     ->schema([
                         Select::make('platform')
-                            ->options([
-                                'x' => 'X (Twitter)',
-                                'facebook' => 'Facebook',
-                                'linkedin' => 'LinkedIn',
-                                'instagram' => 'Instagram',
-                                'youtube' => 'YouTube',
-                                'tiktok' => 'TikTok',
-                                'threads' => 'Threads',
-                                'pinterest' => 'Pinterest',
-                                'medium' => 'Medium',
-                                'substack' => 'Substack',
-                            ])
+                            ->options(config('settings.social_platforms'))
                             ->required(),
                         TextInput::make('url')
                             ->label('Profile address')
@@ -421,6 +411,45 @@ class ManageSettings extends Page
             ]);
     }
 
+    private function publishTab(): Tab
+    {
+        return Tab::make('Publish page')
+            ->icon(Heroicon::OutlinedPencilSquare)
+            ->schema([
+                TextInput::make('publish.headline')->label('Headline')->required()->maxLength(100),
+                Textarea::make('publish.intro')->label('Introduction')->rows(3)->maxLength(400),
+                TextInput::make('publish.cta_label')
+                    ->label('Sign-up button text')
+                    ->helperText('The button takes visitors to the writer sign-up form.')
+                    ->required()
+                    ->maxLength(30),
+                Repeater::make('publish.benefits')
+                    ->label('Why write for us')
+                    ->schema([
+                        TextInput::make('title')->label('Heading')->required()->maxLength(60),
+                        Textarea::make('text')->label('Text')->rows(2)->maxLength(250),
+                    ])
+                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
+                    ->collapsible()
+                    ->reorderable()
+                    ->maxItems(6)
+                    ->defaultItems(0)
+                    ->addActionLabel('Add a reason'),
+                Repeater::make('publish.steps')
+                    ->label('How it works (steps)')
+                    ->schema([
+                        TextInput::make('title')->label('Step')->required()->maxLength(60),
+                        Textarea::make('text')->label('Text')->rows(2)->maxLength(250),
+                    ])
+                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
+                    ->collapsible()
+                    ->reorderable()
+                    ->maxItems(6)
+                    ->defaultItems(0)
+                    ->addActionLabel('Add a step'),
+            ]);
+    }
+
     private function integrationsTab(): Tab
     {
         return Tab::make('Integrations')
@@ -480,13 +509,9 @@ class ManageSettings extends Page
             });
     }
 
-    private function linkInput(string $name, string $label): TextInput
+    private function linkInput(string $name, string $label): Select
     {
-        return TextInput::make($name)
-            ->label($label)
-            ->placeholder('/page or https://…')
-            ->rule(new SiteLink)
-            ->maxLength(255);
+        return LinkPicker::make($name, $label);
     }
 
     private function countInput(string $name, string $label): TextInput

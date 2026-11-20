@@ -44,7 +44,7 @@ class PageForm
                             ->prefix(url('/').'/')
                             ->required()
                             ->maxLength(120)
-                            ->rule(new PublicSlug)
+                            ->rule(new PublicSlug(Page::class))
                             ->unique(ignoreRecord: true)
                             ->helperText(fn (?Page $record): string => $record?->is_published
                                 ? 'If you change this, visitors using the old address are sent to the new one automatically.'

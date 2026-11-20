@@ -2,12 +2,25 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\ShowPage;
+use App\Http\Controllers\ShowArticle;
+use App\Http\Controllers\ShowAuthor;
+use App\Http\Controllers\ShowPageOrCategory;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'home')->name('home');
+// A lowercase slug that isn't one of the app's own top-level addresses (admin, writer, jobs, …).
+$reserved = implode('|', array_map('preg_quote', config('site.reserved_slugs')));
+$publicSlug = "(?!(?:{$reserved})(?![a-z0-9-]))[a-z0-9]+(?:-[a-z0-9]+)*";
+$slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 
-// Catch-all for owner pages (and blog categories from C1). Keep it last so fixed routes win.
-Route::get('/{slug}', ShowPage::class)
-    ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+Route::view('/', 'home')->name('home');
+Route::view('/publish', 'publish')->name('publish');
+Route::get('/authors/{slug}', ShowAuthor::class)->where('slug', $slug)->name('authors.show');
+
+// Catch-alls for the blog and owner pages. Keep them last so fixed routes win.
+Route::get('/{category}/{post}', ShowArticle::class)
+    ->where(['category' => $publicSlug, 'post' => $slug])
+    ->name('articles.show');
+
+Route::get('/{slug}', ShowPageOrCategory::class)
+    ->where('slug', $publicSlug)
     ->name('pages.show');
