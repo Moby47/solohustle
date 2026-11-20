@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobBoardController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowArticle;
@@ -14,7 +15,7 @@ $reserved = implode('|', array_map('preg_quote', config('site.reserved_slugs')))
 $publicSlug = "(?!(?:{$reserved})(?![a-z0-9-]))[a-z0-9]+(?:-[a-z0-9]+)*";
 $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 
-Route::view('/', 'home')->name('home');
+Route::get('/', HomeController::class)->name('home');
 Route::view('/publish', 'publish')->name('publish');
 Route::get('/search', SearchController::class)->name('search');
 Route::get('/authors/{slug}', ShowAuthor::class)->where('slug', $slug)->name('authors.show');
