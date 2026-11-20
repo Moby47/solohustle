@@ -90,3 +90,27 @@ Dashboard → **Settings → Redirects**:
 - [ ] **New redirect** from `/old-test` to `/about`; **Try it** opens /about.
 - [ ] A redirect without a leading `/`, or from and to the same address, is refused.
 - [ ] Redirects never override a page that exists.
+
+---
+
+## C. Blog
+
+### C1. Articles, categories and tags (dashboard)
+Dashboard → **Content**:
+- [ ] **Categories** lists Career, Freelancing, SEO & Content, Reviews & Guides. Drag to reorder; the order sticks after reload.
+- [ ] Add a category called `About`: refused, because a page already uses that address.
+- [ ] A category that has articles can't be deleted (the delete button is greyed out with a hint).
+- [ ] **Tags**: add, rename and delete a tag.
+- [ ] **Articles → New article**: type a title and the web address fills itself in, with the category in the address preview.
+- [ ] Write some text with headings, a list, a table and a link. Insert an image into the text.
+- [ ] Add a tag straight from the article form (type a new name, then "Create").
+- [ ] Upload a cover photo of any shape: it is cropped to a wide 16:9 frame; you can adjust the crop with the editor.
+- [ ] Try to save with a cover but no image description: you're asked to describe the image.
+- [ ] **Answer boxes**: type a quick answer and watch the word counter (green at 40–60 words).
+- [ ] Add two FAQs and reorder them; add a source with a web link. A source link like `javascript:x` is refused.
+- [ ] Set **Status** to Published and save: the publish date fills in automatically.
+- [ ] Back in the list: the cover thumbnail, status badge and "Featured" star show; tabs (All, Awaiting review, Published, Drafts, Rejected) filter correctly; filters by category and author work.
+- [ ] In the project folder, the cover is saved under `public/uploads/covers/` as three `.webp` files (full, 960 and 480 wide).
+
+Writer area → **Profile**:
+- [ ] Upload a photo of any shape: it is cropped square and saved as `.webp` under `public/uploads/authors/`.

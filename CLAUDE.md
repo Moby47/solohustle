@@ -279,7 +279,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] B4. Pages (edit/add, public route), Redirects (resource + middleware), `EssentialsSeeder`.
 
 **C. Blog**
-- [ ] C1. Categories, tags, posts: models, enums, Policy, admin resources, editor, WebP covers, SEO fields, quick answer / FAQs / sources fields with helper text.
+- [x] C1. Categories, tags, posts: models, enums, Policy, admin resources, editor, WebP covers, SEO fields, quick answer / FAQs / sources fields with helper text.
 - [ ] C2. Review flow (accept / accept with edits / ask for changes / reject), queued emails, slug redirects.
 - [ ] C3. Writer side: own posts, edit rules, submit with the two confirmations, status and notes.
 - [ ] C4. Admin Writers resource with suspend/unsuspend.
