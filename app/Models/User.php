@@ -94,6 +94,19 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->suspended_at !== null;
     }
 
+    /**
+     * Author pages exist only for people in good standing who have something published.
+     */
+    public function hasAuthorPage(): bool
+    {
+        return ! $this->isSuspended() && $this->posts()->published()->exists();
+    }
+
+    public function authorUrl(): string
+    {
+        return url('/authors/'.$this->slug);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return match ($panel->getId()) {
