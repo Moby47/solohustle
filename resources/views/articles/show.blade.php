@@ -33,7 +33,9 @@
     @endif
 
     <article>
-        <header class="mx-auto max-w-3xl px-4 pt-10 sm:px-6 sm:pt-14">
+        {{-- Same 6xl frame as the text below, so the title, cover and text all line up on the left. --}}
+        <header class="mx-auto max-w-6xl px-4 pt-10 sm:px-6 sm:pt-14">
+            <div class="max-w-3xl">
             <x-breadcrumb :items="[$post->category->name => $post->category->url(), $post->title => null]" />
 
             <a href="{{ $post->category->url() }}" class="mt-6 inline-block text-sm font-semibold uppercase tracking-wider text-primary no-underline hover:underline">
@@ -75,10 +77,11 @@
                     <p class="mt-1 text-ink">{{ $post->quick_answer }}</p>
                 </aside>
             @endif
+            </div>
         </header>
 
         @if ($post->cover_image)
-            <figure class="mx-auto mt-10 max-w-5xl px-4 sm:px-6">
+            <figure class="mx-auto mt-10 max-w-6xl px-4 sm:px-6">
                 <img src="{{ $post->coverUrl() }}"
                      srcset="{{ $post->coverUrl(480) }} 480w, {{ $post->coverUrl(960) }} 960w, {{ $post->coverUrl() }} 1600w"
                      sizes="(min-width: 1024px) 1024px, 100vw"

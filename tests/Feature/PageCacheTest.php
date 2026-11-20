@@ -66,6 +66,17 @@ test('thank-you messages and form errors are never hidden by the cache', functio
         ->assertHeaderMissing('X-Page-Cache');
 });
 
+test('cached job lists keep their live filters working', function () {
+    $this->get('/jobs')->assertHeader('X-Page-Cache', 'miss');
+
+    $this->get('/jobs')
+        ->assertHeader('X-Page-Cache', 'hit')
+        ->assertSee('livewire', false)
+        ->assertSee('wire\:loading', false);
+
+    expect(preg_match('/<script[^>]+livewire[^>]*\.js/', $this->get('/jobs')->getContent()))->toBe(1);
+});
+
 test('search results and errors are not cached', function () {
     $this->get('/search?q=x')->assertHeaderMissing('X-Page-Cache');
     $this->get('/nope')->assertNotFound()->assertHeaderMissing('X-Page-Cache');

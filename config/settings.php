@@ -62,7 +62,7 @@ return [
             ],
             'jobs' => [
                 'visible' => true,
-                'title' => 'Latest remote jobs',
+                'title' => 'Latest jobs',
                 'count' => 6,
             ],
             'guides' => [

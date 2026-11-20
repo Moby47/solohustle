@@ -31,6 +31,7 @@
     @if ($analyticsId)
         <script>window.siteAnalyticsId = @js($analyticsId);</script>
     @endif
+    @stack('head')
 </head>
 <body class="flex min-h-screen flex-col">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2">
@@ -48,5 +49,6 @@
     @if ($analyticsId)
         <x-cookie-consent />
     @endif
+    @stack('scripts')
 </body>
 </html>

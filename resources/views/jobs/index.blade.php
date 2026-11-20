@@ -25,4 +25,12 @@
     </section>
 
     <livewire:job-directory :base-path="$basePath" :locked-category-id="$lockedCategoryId" :locked-work-mode="$lockedWorkMode" />
+
+    {{-- Included here rather than auto-injected, so pages served from the page cache keep working. --}}
+    @push('head')
+        @livewireStyles
+    @endpush
+    @push('scripts')
+        @livewireScripts
+    @endpush
 </x-layouts.app>
