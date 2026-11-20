@@ -238,6 +238,7 @@ Goal: make it easy for Google AI Overviews, ChatGPT search, Perplexity and Copil
   - locally generated branded placeholder images. Never hotlink.
 
 ## Deploy (host decided at H1)
+**Decided: Heroku** (Henry, 2026-11-21). H1 builds the Heroku kit only: Procfile/release, JawsDB, R2 media (league/flysystem-aws-s3-v3), `LOG_CHANNEL=errorlog`, `SESSION_SECURE_COOKIE`, worker dyno running `schedule:work` (which also runs the queue), first-install seeding, timezone. Proxies are already trusted and https is forced in production.
 - **Both hosts**: run `npm run build`. Production `.env` sets `APP_ENV=production` and `APP_DEBUG=false`. HTTPS is forced in production.
 - **Namecheap shared (no SSH)**:
   - Build locally: `composer install --no-dev -o` and `npm run build`, then zip without `node_modules`, `.env` and tests (`deploy/build.ps1`).
@@ -304,7 +305,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 **F. SEO, AEO/GEO and speed**
 - [x] F1. `<x-seo>`, sitemap, Organization/WebSite/Article/FAQ structured data, GA4 / Search Console / Bing output from settings.
 - [x] F2. AEO/GEO: AI & search engines settings tab, dynamic `robots.txt` with AI crawler switches, `/llms.txt`, IndexNow.
-- [ ] F3. Response cache + busting, image `srcset`, indexes, eager loading, Lighthouse pass.
+- [x] F3. Response cache + busting, image `srcset`, indexes, eager loading, Lighthouse pass. (Lighthouse scores waived by Henry, 2026-11-21.)
 
 **G. Content and QA**
 - [x] G1. `DemoSeeder` with placeholder images; full local click-through.

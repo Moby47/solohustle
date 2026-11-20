@@ -58,8 +58,13 @@ class SiteContentObserver
         }
     }
 
+    /**
+     * Scheduled articles aren't public yet; AnnounceScheduledPosts tells search engines when their time comes.
+     */
     private function postIsOrWasPublic(Post $post): bool
     {
-        return $post->status === PostStatus::Published || $post->getOriginal('status') === PostStatus::Published;
+        $isLiveNow = $post->status === PostStatus::Published && $post->published_at?->isPast();
+
+        return $isLiveNow || $post->getOriginal('status') === PostStatus::Published;
     }
 }

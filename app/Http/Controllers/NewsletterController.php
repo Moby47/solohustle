@@ -18,7 +18,7 @@ class NewsletterController extends Controller
     {
         // Several sign-up forms can be on one page; remember which one was used so the message shows in the right place.
         $formId = preg_replace('/[^a-z0-9-]/', '', (string) $request->input('form_id')) ?: 'newsletter-site';
-        $back = url()->previous().'#'.$formId;
+        $back = $this->safePreviousUrl().'#'.$formId;
 
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'email', 'max:150'],
@@ -39,6 +39,16 @@ class NewsletterController extends Controller
         return redirect()->to($back)
             ->with('newsletter_form', $formId)
             ->with('newsletter_status', 'Almost done! Check your inbox and click the link to confirm your subscription.');
+    }
+
+    /**
+     * The page the form was on. The browser's "previous page" can name another website, so only accept this one.
+     */
+    private function safePreviousUrl(): string
+    {
+        $previous = strtok(url()->previous(), '#');
+
+        return parse_url($previous, PHP_URL_HOST) === parse_url(config('app.url'), PHP_URL_HOST) ? $previous : url('/');
     }
 
     public function confirm(Request $request, Subscriber $subscriber, Newsletter $newsletter): View

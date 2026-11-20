@@ -16,6 +16,9 @@ class PostPublished extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    /** If the record was deleted before the email went out, drop the email instead of failing. */
+    public bool $deleteWhenMissingModels = true;
+
     public function __construct(public Post $post, public bool $withEdits = false) {}
 
     /**

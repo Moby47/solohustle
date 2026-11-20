@@ -37,6 +37,8 @@ class SearchController extends Controller
             ->paginate(self::ARTICLES_PER_PAGE)
             ->withQueryString();
 
+        abort_if($posts->isEmpty() && $posts->currentPage() > 1, 404);
+
         return view('search', [
             'query' => $query,
             'jobs' => $jobs,

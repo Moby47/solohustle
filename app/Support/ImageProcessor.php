@@ -7,6 +7,7 @@ namespace App\Support;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
 
@@ -14,6 +15,9 @@ use Intervention\Image\Interfaces\ImageInterface;
 final class ImageProcessor
 {
     private const QUALITY = 80;
+
+    /** Biggest photo we'll decode (a 24-megapixel camera photo is fine). */
+    private const MAX_PIXELS = 30_000_000;
 
     /**
      * Crop to exactly $width × $height, plus narrower copies saved as "name-{width}.webp" for srcset.
@@ -103,6 +107,19 @@ final class ImageProcessor
 
     private function read(UploadedFile $file): ImageInterface
     {
+        $size = @getimagesize($file->getRealPath());
+
+        if ($size === false) {
+            throw ValidationException::withMessages(['image' => 'That file doesn\'t look like an image. Please upload a JPG, PNG or WebP.']);
+        }
+
+        // Decoding needs about 4 bytes per pixel; refuse giant photos politely instead of running out of memory.
+        if ($size[0] * $size[1] > self::MAX_PIXELS) {
+            throw ValidationException::withMessages(['image' => 'That image is very large. Please use one under '.(self::MAX_PIXELS / 1_000_000).' megapixels (for example 6000 × 4000).']);
+        }
+
+        @ini_set('memory_limit', '512M');
+
         return ImageManager::gd()->read($file->getRealPath());
     }
 

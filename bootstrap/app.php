@@ -16,6 +16,10 @@ $app = Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Global, so it also catches addresses that match no route at all.
         $middleware->append(HandleRedirects::class);
+
+        // Heroku's router (and most hosting load balancers) sits in front of the app; trust it so Laravel sees
+        // the real https:// address and visitor IP. Without this, links and signed email links break.
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

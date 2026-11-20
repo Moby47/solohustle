@@ -31,6 +31,9 @@ class ShowPageOrCategory extends Controller
             ->latest('published_at')
             ->paginate(12);
 
+        // A page number past the end (old link or a bot) is "not found", not an empty category.
+        abort_if($posts->isEmpty() && $posts->currentPage() > 1, 404);
+
         return view('categories.show', [
             'category' => $category,
             'posts' => $posts,

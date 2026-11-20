@@ -358,3 +358,17 @@ Please still check by hand, on a real phone, a tablet and a computer:
 - [ ] A handful of **Apply now** buttons open the employer's page in a new tab.
 - [ ] The mobile menu, search, and the cookie bar (live site with GA set).
 - [ ] Lighthouse (see F3) on home, `/jobs`, a job page and an article: 90+ on mobile.
+
+---
+
+## Pre-deployment review (Nov 2026)
+A full review found and fixed these. Please re-check the ones you can see:
+- [ ] Developer: the scheduler now runs the email queue every minute (before, queued emails would never have been sent on the live site), plus nightly housekeeping and a heartbeat.
+- [ ] Schedule an article a few minutes ahead: when its time comes it appears on the homepage within about 5 minutes (caches refresh automatically).
+- [ ] Jobs: an **open** job with a closing date in the past, or a posted date in the future, is refused with a clear message. Closed jobs with old dates can still be edited.
+- [ ] Uploading a huge photo (e.g. 8000 px wide) as a cover, profile photo or logo works: it is shrunk in the browser first. A non-image file is refused politely.
+- [ ] Replacing or removing the logo/favicon in Site settings removes the old file.
+- [ ] Images inserted into **Pages** are now optimised like article images.
+- [ ] `/career?page=99` (a page number past the end) shows "not found" instead of an empty category; the job list jumps back to page 1.
+- [ ] A contact message containing `[text](link)` arrives in your email as plain text, not as a clickable link.
+- [ ] Developer: links are forced to https on the live site and Heroku's proxy is trusted; after a newsletter sign-up, visitors are only ever sent back to this site.

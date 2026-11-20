@@ -235,6 +235,11 @@ class PostForm
                     ->imageEditor()
                     ->imageAspectRatio('16:9')
                     ->automaticallyCropImagesToAspectRatio()
+                    // Shrunk in the browser first: faster uploads and no giant photos on the server.
+                    ->automaticallyResizeImagesMode('cover')
+                    ->automaticallyResizeImagesToWidth('1920')
+                    ->automaticallyResizeImagesToHeight('1080')
+                    ->rule('dimensions:max_width=8000,max_height=8000')
                     ->maxSize(8192)
                     ->disk(config('media.disk'))
                     ->visibility('public')

@@ -87,6 +87,19 @@ class JobDirectory extends Component
     #[Computed]
     public function jobs(): LengthAwarePaginator
     {
+        $jobs = $this->paginatedJobs();
+
+        // An old link to a page that no longer exists (fewer jobs now): show page 1 instead of an empty list.
+        if ($jobs->isEmpty() && $jobs->currentPage() > 1) {
+            $this->resetPage();
+            $jobs = $this->paginatedJobs();
+        }
+
+        return $jobs;
+    }
+
+    private function paginatedJobs(): LengthAwarePaginator
+    {
         return $this->query()
             ->with(['jobCategory', 'region'])
             ->orderByDesc('is_featured')
@@ -168,7 +181,7 @@ class JobDirectory extends Component
             $query->whereDate('posted_at', '>=', today()->subDays($days));
         }
 
-        if (($keyword = trim($this->q)) !== '') {
+        if (($keyword = mb_substr(trim($this->q), 0, 100)) !== '') {
             $query->where(fn (Builder $q) => $q
                 ->where('title', 'like', "%{$keyword}%")
                 ->orWhere('company_name', 'like', "%{$keyword}%")

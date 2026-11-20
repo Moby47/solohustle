@@ -15,6 +15,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
     {
         // Catch slow "one query per row" code while developing and testing; never break the live site over it.
         Model::preventLazyLoading(! $this->app->isProduction());
+
+        if ($this->app->isProduction()) {
+            URL::forceScheme('https');
+        }
 
         $this->app->make(MailSettings::class)->apply();
 

@@ -20,6 +20,9 @@ class ContactMessageReceived extends Mailable implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /** If the record was deleted before the email went out, drop the email instead of failing. */
+    public bool $deleteWhenMissingModels = true;
+
     public function __construct(public ContactMessage $contactMessage) {}
 
     public function envelope(): Envelope

@@ -14,6 +14,7 @@ use App\Http\Controllers\ShowPageOrCategory;
 use App\Http\Middleware\CachePublicPages;
 use App\Support\LlmsTxt;
 use App\Support\SitemapBuilder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
@@ -39,9 +40,13 @@ Route::get('/{key}.txt', function (string $key) {
     return response($key, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
 })->where('key', '[a-z0-9]{32}')->name('indexnow.key');
 
-// Normally the web server serves the generated public/sitemap.xml; this only answers before the first generation.
-Route::get('/sitemap.xml', fn (SitemapBuilder $sitemap) => response($sitemap->build(), 200, ['Content-Type' => 'application/xml']))
-    ->name('sitemap');
+// When public/sitemap.xml exists the web server serves it directly. On Heroku the nightly file is written on the
+// worker, which the web side can't see, so this builds it on request and keeps it for an hour.
+Route::get('/sitemap.xml', fn (SitemapBuilder $sitemap) => response(
+    Cache::remember('sitemap.xml', now()->addHour(), fn () => $sitemap->build()),
+    200,
+    ['Content-Type' => 'application/xml'],
+))->name('sitemap');
 
 // Public forms: honeypot + per-visitor rate limit.
 Route::middleware([ProtectAgainstSpam::class, 'throttle:public-forms'])->group(function () {

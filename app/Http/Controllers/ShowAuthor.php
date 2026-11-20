@@ -22,6 +22,8 @@ class ShowAuthor extends Controller
             ->latest('published_at')
             ->paginate(12);
 
+        abort_if($posts->isEmpty() && $posts->currentPage() > 1, 404);
+
         return view('authors.show', [
             'author' => $author,
             'posts' => $posts,

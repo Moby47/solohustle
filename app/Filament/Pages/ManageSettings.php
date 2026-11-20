@@ -31,6 +31,7 @@ use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 use UnitEnum;
 
@@ -108,6 +109,8 @@ class ManageSettings extends Page
         $key = $settings->get('ai.indexnow_key');
         data_set($state, 'ai.indexnow_key', $key ?: (data_get($state, 'ai.indexnow_enabled') ? IndexNow::newKey() : null));
 
+        $this->deleteReplacedImages($settings, $state);
+
         $settings->save($state);
 
         $this->form->fill($this->withoutSecrets($settings->all()));
@@ -165,6 +168,22 @@ class ManageSettings extends Page
                 ? "Email sending isn't set up yet, so the message was written to the site's log file instead of being delivered."
                 : null)
             ->send();
+    }
+
+    /**
+     * Remove the old file when the owner replaces or clears the logo, favicon or another settings image.
+     *
+     * @param  array<string, mixed>  $state
+     */
+    private function deleteReplacedImages(Settings $settings, array $state): void
+    {
+        foreach (['general.logo', 'general.favicon', 'seo.default_share_image', 'homepage.resource.image'] as $key) {
+            $old = $settings->get($key);
+
+            if (filled($old) && $old !== data_get($state, $key)) {
+                Storage::disk(config('media.disk'))->delete($old);
+            }
+        }
     }
 
     private function testBrevo(): void

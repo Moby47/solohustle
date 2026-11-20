@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Pages\Schemas;
 
 use App\Models\Page;
 use App\Rules\PublicSlug;
+use App\Support\ImageProcessor;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -16,6 +17,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 /** The add/edit form for pages. */
 class PageForm
@@ -52,8 +54,9 @@ class PageForm
                         RichEditor::make('body')
                             ->label('Page text')
                             ->fileAttachmentsDisk(config('media.disk'))
-                            ->fileAttachmentsDirectory('pages')
                             ->fileAttachmentsVisibility('public')
+                            ->saveUploadedFileAttachmentUsing(fn (TemporaryUploadedFile $file): string => app(ImageProcessor::class)
+                                ->storeScaled($file, 'pages', 1600))
                             ->extraInputAttributes(['style' => 'min-height: 24rem']),
                     ]),
                 Group::make()

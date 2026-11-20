@@ -10,6 +10,7 @@ use App\Enums\JobStatus;
 use App\Enums\WorkMode;
 use App\Models\Job;
 use App\Support\ImageProcessor;
+use Closure;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -21,7 +22,9 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Carbon;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 /** The job editor: what the job is on the left, status and dates on the right. */
@@ -166,13 +169,26 @@ class JobForm
                     ->label('Posted on')
                     ->default(now())
                     ->required()
+                    ->maxDate(today())
+                    ->validationMessages(['before_or_equal' => 'The posted date can\'t be in the future.'])
                     ->native(false)
                     ->displayFormat('j M Y'),
                 DatePicker::make('closes_at')
                     ->label('Closing date')
                     ->helperText('Optional. The job closes automatically the day after this date.')
                     ->native(false)
-                    ->displayFormat('j M Y'),
+                    ->displayFormat('j M Y')
+                    ->rules([
+                        // An open job with a past closing date would be closed again tonight, so ask for a fix now.
+                        fn (Get $get): Closure => function (string $attribute, mixed $value, Closure $fail) use ($get): void {
+                            $status = $get('status');
+                            $isOpen = ($status instanceof JobStatus ? $status : JobStatus::tryFrom((string) $status)) === JobStatus::Open;
+
+                            if ($isOpen && filled($value) && Carbon::parse($value)->lt(today())) {
+                                $fail('This date has passed. Choose a later date, clear it, or set the job to Closed.');
+                            }
+                        },
+                    ]),
                 TextEntry::make('last_verified_at')
                     ->label('Last checked')
                     ->state(fn (?Job $record): string => $record?->last_verified_at
@@ -206,6 +222,10 @@ class JobForm
                     ->label('Logo')
                     ->helperText('Optional. A square logo looks best.')
                     ->image()
+                    ->automaticallyResizeImagesMode('contain')
+                    ->automaticallyResizeImagesToWidth('400')
+                    ->automaticallyResizeImagesToHeight('400')
+                    ->rule('dimensions:max_width=8000,max_height=8000')
                     ->maxSize(2048)
                     ->disk(config('media.disk'))
                     ->visibility('public')
