@@ -298,3 +298,18 @@ Dashboard home (`/admin`):
 - [ ] Four boxes: **Articles to review**, **Jobs to re-check**, **Unread messages**, **New subscribers** (confirmed in the last 7 days). Each is yellow/blue when something needs you and green when all is done.
 - [ ] Clicking each box opens the right list, already on the right tab (Awaiting review / Needs re-check / Unread).
 - [ ] When a writer submits an article, an **Awaiting your review** list appears (oldest first) with a **Review** button; it disappears when nothing is waiting.
+
+---
+
+## F. SEO, AI search and speed
+
+### F1. Search engine basics
+Tip: in Chrome, right-click a page → **View page source** to see these tags; or use https://search.google.com/test/rich-results once the site is live.
+- [ ] Each page's browser tab title ends with " | Solo Hustle" (from **Site settings → SEO defaults → Title ending**).
+- [ ] Share an article link in WhatsApp/LinkedIn/X (live site): it shows the title, summary and cover image. Pages without an image use the **Default share image**.
+- [ ] Until launch, page source contains `noindex, nofollow` on every page. Turn off **Ask search engines not to list the site** and it disappears (except on drafts, closed jobs and search results).
+- [ ] Page source on an article contains Article, BreadcrumbList and (if it has FAQs) FAQPage data; on a job: JobPosting and BreadcrumbList; on an author page: Person; on every page: Organization and WebSite (with search).
+- [ ] An article's "Updated" date matches its `dateModified` in the page source.
+- [ ] `/sitemap.xml` lists the homepage, job pages, open jobs, pages, categories, published articles and author pages, but no drafts or closed jobs. It is rebuilt every night.
+- [ ] **Site settings → Integrations → Search Console code**: after saving, page source contains `google-site-verification`.
+- [ ] Live site only: with a **Google Analytics ID** saved, a slim cookie bar appears at the bottom; nothing is tracked until **Accept**. **Decline** hides it for good; the footer's **Cookie settings** link brings it back. Without an ID there is no bar.

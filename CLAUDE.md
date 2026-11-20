@@ -59,7 +59,7 @@ Client brief: `docs/Solo_Hustle_Website_Build_Brief.pdf`.
 - Search: Laravel Scout, `database` driver, using MySQL FULLTEXT. It can be swapped for Meilisearch later with no code changes.
 - Queue and cache: `database` driver.
 - Images: Intervention Image v3. Convert uploads to WebP and make sized variants.
-- Other packages: `spatie/laravel-sitemap`, `spatie/laravel-honeypot`, `spatie/laravel-responsecache`.
+- Other packages: `spatie/laravel-honeypot`, `spatie/laravel-responsecache`. The sitemap is built in-house (`App\Support\SitemapBuilder`) because no `spatie/laravel-sitemap` release supports both PHP 8.3 and Laravel 13.
 - Tests: Pest.
 
 ## Portability (must run on Namecheap shared *or* Heroku)
@@ -302,7 +302,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] E5. Dashboard widgets.
 
 **F. SEO, AEO/GEO and speed**
-- [ ] F1. `<x-seo>`, sitemap, Organization/WebSite/Article/FAQ structured data, GA4 / Search Console / Bing output from settings.
+- [x] F1. `<x-seo>`, sitemap, Organization/WebSite/Article/FAQ structured data, GA4 / Search Console / Bing output from settings.
 - [ ] F2. AEO/GEO: AI & search engines settings tab, dynamic `robots.txt` with AI crawler switches, `/llms.txt`, IndexNow.
 - [ ] F3. Response cache + busting, image `srcset`, indexes, eager loading, Lighthouse pass.
 
