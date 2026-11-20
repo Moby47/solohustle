@@ -11,9 +11,9 @@ test('guests are sent to the admin login', function () {
     $this->get('/admin')->assertRedirect('/admin/login');
 });
 
-test('the admin login page loads', function () {
-    $this->get('/admin/login')->assertOk();
-});
+test('the admin login and password reset pages load', function (string $path) {
+    $this->get($path)->assertOk();
+})->with(['/admin/login', '/admin/password-reset/request']);
 
 test('admins can open the dashboard', function () {
     $this->actingAs(User::factory()->admin()->create())
