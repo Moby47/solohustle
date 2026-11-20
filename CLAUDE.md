@@ -290,7 +290,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 
 **D. Jobs**
 - [x] D1. Job categories, regions, jobs: models, enums, admin resource, Duplicate / Mark verified / Close-Reopen actions.
-- [ ] D2. Auto-close command (scheduled), "Needs re-check" filter.
+- [x] D2. Auto-close command (scheduled), "Needs re-check" filter.
 - [ ] D3. Public directory (Livewire, URL-synced filters), landing pages.
 - [ ] D4. Job detail, JobPosting JSON-LD, closed-job handling.
 

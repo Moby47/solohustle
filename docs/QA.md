@@ -200,3 +200,9 @@ Dashboard → **Jobs**:
 - [ ] Row menu (⋮): **Mark verified** (last checked becomes "now"), **Close** (clear warning; status Closed), **Reopen**, **Duplicate** (opens an open copy called "… (copy)" dated today), **View on site** (works from D4).
 - [ ] Select several jobs: bulk **Mark verified** and **Close** work.
 - [ ] Open a job: the same actions are at the top of the editor.
+
+### D2. Automatic closing and re-check reminders
+- [ ] Create a job with a closing date of **yesterday**, one with **today**, and one with no date. Run `php artisan jobs:close-expired`: it says "Closed 1 expired job(s)"; only yesterday's job is now Closed.
+- [ ] `php artisan schedule:list` shows `jobs:close-expired` running daily at 00:15.
+- [ ] A job whose "Last checked" is over 30 days old (edit the date in the database, or wait) appears in the **Needs re-check** tab and filter, shows a warning icon in the list, and the **Jobs** menu item shows a yellow count.
+- [ ] Reopening a job whose closing date has passed warns you to update the date first.
