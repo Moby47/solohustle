@@ -6,10 +6,12 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobBoardController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowArticle;
 use App\Http\Controllers\ShowAuthor;
 use App\Http\Controllers\ShowPageOrCategory;
+use App\Support\LlmsTxt;
 use App\Support\SitemapBuilder;
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
@@ -22,6 +24,21 @@ $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 Route::get('/', HomeController::class)->name('home');
 Route::view('/publish', 'publish')->name('publish');
 Route::get('/search', SearchController::class)->name('search');
+
+Route::get('/robots.txt', RobotsController::class)->name('robots');
+
+Route::get('/llms.txt', function (LlmsTxt $llms) {
+    abort_unless(setting('ai.llms_txt'), 404);
+
+    return response($llms->content(), 200, ['Content-Type' => 'text/markdown; charset=UTF-8']);
+})->name('llms');
+
+// The IndexNow key file proves to search engines that the pings really come from this site.
+Route::get('/{key}.txt', function (string $key) {
+    abort_unless(setting('ai.indexnow_enabled') && hash_equals((string) setting('ai.indexnow_key'), $key), 404);
+
+    return response($key, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
+})->where('key', '[a-z0-9]{32}')->name('indexnow.key');
 
 // Normally the web server serves the generated public/sitemap.xml; this only answers before the first generation.
 Route::get('/sitemap.xml', fn (SitemapBuilder $sitemap) => response($sitemap->build(), 200, ['Content-Type' => 'application/xml']))

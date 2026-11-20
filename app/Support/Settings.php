@@ -88,6 +88,7 @@ final class Settings
     public function flush(): void
     {
         Cache::forget(self::CACHE_KEY);
+        LlmsTxt::forget();
         $this->resolved = null;
     }
 
