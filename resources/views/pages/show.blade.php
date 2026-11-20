@@ -1,4 +1,5 @@
-<x-layouts.app :title="$page->seo_title ?: $page->title" :description="$page->meta_description" :noindex="! $page->is_published">
+<x-layouts.app :title="$page->seo_title ?: $page->title" :description="$page->meta_description" :noindex="! $page->is_published"
+                :canonical="$page->url()" :schemas="[\App\Support\StructuredData::breadcrumbs([$page->title => $page->url()])]">
     @if ($isAdmin)
         <x-admin-bar :highlight="! $page->is_published"
                      :edit-url="\App\Filament\Resources\Pages\PageResource::getUrl('edit', ['record' => $page], panel: 'admin')">

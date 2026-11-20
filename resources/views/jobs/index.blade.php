@@ -1,4 +1,6 @@
-<x-layouts.app :title="$metaTitle" :description="$metaDescription">
+{{-- Filtered job lists are real, shareable pages, so each keeps its own address as canonical. --}}
+<x-layouts.app :title="$metaTitle" :description="$metaDescription" :canonical="request()->fullUrl()"
+               :schemas="[\App\Support\StructuredData::breadcrumbs(collect($breadcrumb)->map(fn ($url) => $url ?? url()->current())->all())]">
     <section class="border-b border-line bg-surface">
         <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
             <x-breadcrumb :items="$breadcrumb" />

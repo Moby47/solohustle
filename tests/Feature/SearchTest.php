@@ -11,6 +11,11 @@ use Illuminate\Foundation\Testing\DatabaseTruncation;
 // MySQL full-text indexes can't see rows inside an uncommitted transaction, so commit for real and truncate after.
 uses(DatabaseTruncation::class);
 
+// Leave the database empty again, so tests that run afterwards (inside transactions) start clean.
+afterEach(function () {
+    $this->truncateTablesForAllConnections();
+});
+
 beforeEach(function () {
     $this->withoutVite();
     $this->category = Category::factory()->create(['name' => 'Career', 'slug' => 'career']);

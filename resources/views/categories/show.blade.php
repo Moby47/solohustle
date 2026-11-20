@@ -1,4 +1,5 @@
-<x-layouts.app :title="$category->seo_title ?: $category->name" :description="$category->meta_description ?: $category->description">
+<x-layouts.app :title="$category->seo_title ?: $category->name" :description="$category->meta_description ?: $category->description"
+                :schemas="[\App\Support\StructuredData::breadcrumbs([$category->name => $category->url()])]">
     <section class="border-b border-line bg-surface">
         <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
             <x-breadcrumb :items="[$category->name => null]" />

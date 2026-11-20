@@ -1,3 +1,5 @@
+@props(['analytics' => false])
+
 @php
     use App\Support\NavLink;
 
@@ -43,6 +45,11 @@
     </div>
 
     <div class="border-t border-line">
-        <p class="mx-auto max-w-6xl px-4 py-5 text-xs text-muted sm:px-6">&copy; {{ now()->year }} {{ setting('general.site_name') }}</p>
+        <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-5 text-xs text-muted sm:px-6">
+            <p>&copy; {{ now()->year }} {{ setting('general.site_name') }}</p>
+            @if ($analytics)
+                <button type="button" data-cookie-settings class="underline underline-offset-2 hover:text-primary">Cookie settings</button>
+            @endif
+        </div>
     </div>
 </footer>

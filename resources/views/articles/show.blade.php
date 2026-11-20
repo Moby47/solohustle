@@ -8,7 +8,13 @@
     $midCtaLink = setting('article.mid_cta_link');
 @endphp
 
-<x-layouts.app :title="$post->seo_title ?: $post->title" :description="$post->meta_description ?: $post->excerpt" :noindex="! $isLive">
+<x-layouts.app :title="$post->seo_title ?: $post->title" :description="$post->meta_description ?: $post->excerpt" :noindex="! $isLive"
+                type="article" :image="$post->coverUrl()" :canonical="$post->url()"
+                :schemas="[
+                    \App\Support\StructuredData::article($post, $authorHasPage),
+                    \App\Support\StructuredData::breadcrumbs([$post->category->name => $post->category->url(), $post->title => $post->url()]),
+                    \App\Support\StructuredData::faq($post),
+                ]">
     @if (! $isLive)
         <x-admin-bar :highlight="true"
                      :edit-url="$isAdmin ? \App\Filament\Resources\Posts\PostResource::getUrl('edit', ['record' => $post], panel: 'admin') : $post->writerUrl()"

@@ -1,5 +1,6 @@
-<x-layouts.app :title="$author->name" :description="$author->headline ?: 'Articles by '.$author->name">
-    <x-json-ld :data="$personSchema" />
+<x-layouts.app :title="$author->name" :description="$author->bio ?: ($author->headline ?: 'Articles by '.$author->name)"
+                type="profile" :image="media_url($author->photo)" :canonical="$author->authorUrl()"
+                :schemas="[$personSchema]">
 
     <section class="border-b border-line bg-surface">
         <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">

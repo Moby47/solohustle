@@ -6,10 +6,11 @@
 
 <x-layouts.app :title="$job->seo_title ?: $job->title.' at '.$job->company_name"
                :description="$job->meta_description ?: \Illuminate\Support\Str::limit($job->summary, 155)"
-               :noindex="! $isOpen">
-    @if ($schema)
-        <x-json-ld :data="$schema" />
-    @endif
+               :noindex="! $isOpen" :image="$job->logoUrl()" :canonical="$job->url()"
+               :schemas="[
+                   $schema,
+                   \App\Support\StructuredData::breadcrumbs(['Jobs' => url('/jobs'), $job->jobCategory->name => $job->jobCategory->url(), $job->title => $job->url()]),
+               ]">
 
     @if ($isAdmin)
         <x-admin-bar :edit-url="\App\Filament\Resources\Jobs\JobResource::getUrl('edit', ['record' => $job], panel: 'admin')">

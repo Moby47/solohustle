@@ -10,6 +10,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowArticle;
 use App\Http\Controllers\ShowAuthor;
 use App\Http\Controllers\ShowPageOrCategory;
+use App\Support\SitemapBuilder;
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
@@ -21,6 +22,10 @@ $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 Route::get('/', HomeController::class)->name('home');
 Route::view('/publish', 'publish')->name('publish');
 Route::get('/search', SearchController::class)->name('search');
+
+// Normally the web server serves the generated public/sitemap.xml; this only answers before the first generation.
+Route::get('/sitemap.xml', fn (SitemapBuilder $sitemap) => response($sitemap->build(), 200, ['Content-Type' => 'application/xml']))
+    ->name('sitemap');
 
 // Public forms: honeypot + per-visitor rate limit.
 Route::middleware([ProtectAgainstSpam::class, 'throttle:public-forms'])->group(function () {
