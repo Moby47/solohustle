@@ -7,7 +7,7 @@
 - **After each sub-step, in this order**:
   1. Run Pint and the tests.
   2. Commit to `staging` and push.
-  3. Tick the sub-step in **Progress** below, add its browser checks to `docs/QA.md` (same style: short checkbox steps), rebuild the client PDF with `php docs/build-qa-pdf.php`, and commit all three.
+  3. Tick the sub-step in **Progress** below, add its browser checks to `docs/QA.md` (same style: short checkbox steps), update `docs/QA-client.md` too if the change is something the client should try, rebuild both client PDFs with `php docs/build-qa-pdf.php`, and commit all three.
   4. Tell Henry, briefly, what changed and what to test in the browser.
   5. **Stop and wait for his OK.** Do not start the next sub-step on your own.
 - **End of a group** (all of A, all of B, …): ask "Group X done. Merge `staging` into `main` and push?" Merge only on a yes, and use `--no-ff`.
