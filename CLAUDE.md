@@ -272,7 +272,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] A3. Portability: `media` disks and `MEDIA_DISK`, `DB_URL`/`JAWSDB_URL`, `Procfile`, `APP_PUBLIC_PATH` hook.
 
 **B. Accounts and admin**
-- [ ] B1. Filament 5, `/admin` panel, role column, admin access, brand colours.
+- [x] B1. Filament 5, `/admin` panel, role column, admin access, brand colours.
 - [ ] B2. `/writer` panel: registration, email verification, password reset, profile, suspension check.
 - [ ] B3. Settings store and Settings page (all tabs except *AI & search engines*, which comes in F2), mail config from settings, "Send test email".
 - [ ] B4. Pages (edit/add, public route), Redirects (resource + middleware), `EssentialsSeeder`.
