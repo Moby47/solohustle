@@ -270,3 +270,24 @@ Open any sample job from `/jobs`:
 - [ ] **Reply by email** opens your email app with "Re: subject" filled in.
 - [ ] **Mark as unread** takes you back to the Inbox with that message bold again.
 - [ ] Tabs **All / Unread**, search, the Read/Unread filter, and bulk mark read / unread / delete all work.
+
+### E4. Newsletter
+Sign-up:
+- [ ] The homepage (bottom) and every article (blue box at the end) have an email box with **Subscribe** and "We'll email you a link to confirm".
+- [ ] Enter a bad email: "That email address doesn't look right." under the box, on the same form you used.
+- [ ] Enter a real email: "Almost done! Check your inbox…" replaces the form.
+- [ ] Run `php artisan queue:work --stop-when-empty`, then open the confirmation email in `storage/logs/laravel.log` and click **Yes, subscribe me**: a "You're subscribed!" page.
+- [ ] Open the same confirmation link 8+ days later (or change one letter in it): a friendly "This link has expired" page with a fresh sign-up box.
+- [ ] Signing up again with the same email never creates a duplicate.
+
+Dashboard → **People → Subscribers**:
+- [ ] Each subscriber shows email, name, status (Waiting for confirmation / Subscribed / Unsubscribed), where they signed up, "In Brevo", and when they joined. The Status filter works.
+- [ ] **Download CSV** downloads a spreadsheet of all subscribers with their status.
+- [ ] Delete a subscriber: it warns that they're also removed from Brevo (if connected).
+
+Brevo (optional: needs a free Brevo account):
+- [ ] **Site settings → Integrations → Newsletter**: with nothing filled in, **Test connection** says to add the API key and list ID first.
+- [ ] Add a real Brevo API key and list ID, save, **Test connection**: "Connected to Brevo as …". A wrong key gives a clear error.
+- [ ] Confirm a new subscription: after the queue runs, the contact appears in your Brevo list and "In Brevo" turns green.
+- [ ] **Sync subscribers to Brevo** sends every confirmed subscriber (safe to repeat).
+- [ ] Unsubscribe link (`/newsletter/unsubscribe/…`, from a signed link) removes them from the Brevo list too.
