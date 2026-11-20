@@ -152,6 +152,20 @@
                     </ul>
                 @endif
 
+                @if ($jobCategories->isNotEmpty())
+                    <aside aria-label="Related jobs" class="mt-12 rounded-xl bg-primary-light p-6">
+                        <p class="font-semibold text-ink">Ready to put this into practice?</p>
+                        <p class="mt-1 text-sm text-muted">Browse hand-picked jobs, each checked by a real person.</p>
+                        <ul class="mt-4 flex flex-wrap gap-2">
+                            @foreach ($jobCategories as $jobCategory)
+                                <li>
+                                    <a href="{{ $jobCategory->url() }}" class="inline-flex rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-primary no-underline hover:bg-primary hover:text-white">{{ $jobCategory->name }} jobs</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </aside>
+                @endif
+
                 <aside aria-label="About the author" class="mt-12 flex gap-4 rounded-xl border border-line p-6">
                     <x-avatar :user="$post->author" :size="64" />
                     <div>

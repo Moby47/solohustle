@@ -49,6 +49,39 @@ final class ImageProcessor
     }
 
     /**
+     * Fit inside $maxWidth × $maxHeight without cropping (for logos).
+     */
+    public function storeContained(UploadedFile $file, string $directory, int $maxWidth, int $maxHeight): string
+    {
+        $path = $this->newBasePath($directory).'.webp';
+
+        $this->put($path, $this->read($file)->scaleDown($maxWidth, $maxHeight));
+
+        return $path;
+    }
+
+    /**
+     * Copy a single stored image to a new name, so two records never share (and later delete) the same file.
+     */
+    public function copy(?string $path): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        $disk = Storage::disk(config('media.disk'));
+
+        if (! $disk->exists($path)) {
+            return null;
+        }
+
+        $newPath = $this->newBasePath(dirname($path)).'.webp';
+        $disk->copy($path, $newPath);
+
+        return $newPath;
+    }
+
+    /**
      * Delete an image and any narrower copies made from it.
      */
     public function delete(?string $path): void

@@ -24,6 +24,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Mail;
@@ -71,6 +72,7 @@ class ManageSettings extends Page
                         $this->socialTab(),
                         $this->seoTab(),
                         $this->articleTab(),
+                        $this->jobsTab(),
                         $this->publishTab(),
                         $this->integrationsTab(),
                     ]),
@@ -408,6 +410,27 @@ class ManageSettings extends Page
                     ->helperText('Shown at the end of every article.')
                     ->rows(2)
                     ->maxLength(250),
+            ]);
+    }
+
+    private function jobsTab(): Tab
+    {
+        return Tab::make('Jobs pages')
+            ->icon(Heroicon::OutlinedBriefcase)
+            ->schema([
+                Section::make('All jobs page (/jobs)')
+                    ->schema([
+                        TextInput::make('jobs.headline')->label('Headline')->required()->maxLength(100),
+                        Textarea::make('jobs.intro')->label('Introduction')->rows(2)->maxLength(300),
+                        Textarea::make('jobs.meta_description')->label('Description in search results')->rows(2)->maxLength(160),
+                    ]),
+                Section::make('Remote jobs page (/jobs/remote)')
+                    ->schema([
+                        TextInput::make('jobs.remote_headline')->label('Headline')->required()->maxLength(100),
+                        Textarea::make('jobs.remote_intro')->label('Introduction')->rows(2)->maxLength(300),
+                        Textarea::make('jobs.remote_meta_description')->label('Description in search results')->rows(2)->maxLength(160),
+                    ]),
+                Text::make('Each job category has its own page too. Edit its introduction under Jobs → Job categories.'),
             ]);
     }
 

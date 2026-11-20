@@ -182,3 +182,55 @@ Author pages:
 Publish page:
 - [ ] `/publish` shows the headline, intro, "Why write for us", numbered "How it works" steps, a link to the Creator Guidelines, and **Start writing** buttons that open the writer sign-up.
 - [ ] Change the texts in **Site settings → Publish page**: the page updates.
+
+---
+
+## D. Jobs
+
+### D1. Jobs, job categories and regions (dashboard)
+Dashboard → **Jobs**:
+- [ ] **Job categories** lists the 7 categories, each with its "Related guides" blog category. Drag to reorder. Try the web address `remote`: refused with an explanation.
+- [ ] **Regions** lists 7 regions; only Worldwide has the "Anywhere" tick. Edit one to see the "Open to applicants anywhere" switch.
+- [ ] **Jobs → New job**: fill in title, category, region, work mode / type / experience (click-buttons), summary, requirements (one per line), apply link, company and logo. Try the Country dropdown search (e.g. type "nig").
+- [ ] An apply link like `javascript:x` is refused; the apply link is required.
+- [ ] Save: the job is Open, posted today, and "Last checked" says today.
+- [ ] Upload a wide logo: it is shrunk to fit (not cropped) and saved as `.webp` under `public/uploads/logos/`.
+- [ ] In the list: logo, title, company · category, where (mode · region), status, posted, closes, last checked, featured star.
+- [ ] Tabs: **Open** (default), **Needs re-check**, **Closed**, **All**.
+- [ ] Row menu (⋮): **Mark verified** (last checked becomes "now"), **Close** (clear warning; status Closed), **Reopen**, **Duplicate** (opens an open copy called "… (copy)" dated today), **View on site** (works from D4).
+- [ ] Select several jobs: bulk **Mark verified** and **Close** work.
+- [ ] Open a job: the same actions are at the top of the editor.
+
+### D2. Automatic closing and re-check reminders
+- [ ] Create a job with a closing date of **yesterday**, one with **today**, and one with no date. Run `php artisan jobs:close-expired`: it says "Closed 1 expired job(s)"; only yesterday's job is now Closed.
+- [ ] `php artisan schedule:list` shows `jobs:close-expired` running daily at 00:15.
+- [ ] A job whose "Last checked" is over 30 days old (edit the date in the database, or wait) appears in the **Needs re-check** tab and filter, shows a warning icon in the list, and the **Jobs** menu item shows a yellow count.
+- [ ] Reopening a job whose closing date has passed warns you to update the date first.
+
+### D3. Public job directory
+Eight sample jobs are in your local database (companies starting with "Sample", one of them closed).
+- [ ] http://solohustle.test/jobs shows the headline and intro (from **Site settings → Jobs pages**), category buttons (Remote jobs + each job category), a search box, filters, the job count, and job cards.
+- [ ] Each card: logo or first letter, title, company, chips (work mode, type, region, pay), how long ago it was posted. The featured job has a yellow border and "Featured" label and comes first.
+- [ ] Type in the search box: results update as you type (by title, company or summary). The address bar updates too.
+- [ ] Change each filter (category, work mode, region, type, experience, date posted): results update instantly and the address bar keeps the filters.
+- [ ] Copy the filtered address into a new tab: the same results appear.
+- [ ] Filter by **Africa**: Africa jobs **and** Worldwide jobs appear.
+- [ ] **Include closed jobs** shows the closed sample with a "Closed" label.
+- [ ] **Clear filters** resets everything. A search with no results shows a friendly "No jobs match" box.
+- [ ] `/jobs/remote` shows only remote jobs and no work-mode filter. `/jobs/seo` shows "SEO jobs", its intro, only SEO jobs and no category filter.
+- [ ] At phone width the filters are behind a **Filters** button; on desktop they're a sidebar.
+- [ ] With more than 20 jobs, Previous/Next and page numbers appear and keep your filters (add jobs or duplicate a few to see this).
+- [ ] In **Site settings → Navigation**, the link dropdowns now include a "Job categories" group.
+
+### D4. Job page
+Open any sample job from `/jobs`:
+- [ ] Breadcrumb (Jobs / category / title), logo or first letter, title, company (links to their site), chips (work mode, type, region, pay).
+- [ ] One blue **Apply now** button that opens the employer's page in a new tab, with "Opens … website in a new tab" under it.
+- [ ] "About the role" (paragraphs as typed) and "What they're looking for" (a tick list from the requirements).
+- [ ] Facts box: category, where (region · location · country), work mode, type, experience, pay, posted, closes (if set), **Last checked {date}**, and the source link.
+- [ ] "More {category} jobs" lists other open jobs in the same category; "Guides to help you land it" shows articles from the job category's related blog category (publish an article in **SEO & Content** to see it on SEO/Content Writing jobs).
+- [ ] The closed sample job (`Copy Editor (closed sample)`, use "Include closed jobs") shows "This job is closed" with a link to open jobs, and **no** apply button.
+- [ ] Logged in as owner: "Edit in dashboard" bar with "Last checked …". In the dashboard, **View on site** opens the job.
+- [ ] Change a job's category in the dashboard: the old address redirects to the new one.
+- [ ] The sample article (`/career/find-your-first-remote-job`) shows "Ready to put this into practice?" with links to the job categories linked to Career.
+- [ ] Optional: paste a job address into Google's Rich Results Test (https://search.google.com/test/rich-results) once the site is live, to confirm the job data is valid.

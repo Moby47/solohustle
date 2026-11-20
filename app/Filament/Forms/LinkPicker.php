@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Forms;
 
 use App\Models\Category;
+use App\Models\JobCategory;
 use App\Models\Page;
 use App\Rules\SiteLink;
 use Filament\Forms\Components\Select;
@@ -48,6 +49,8 @@ final class LinkPicker
                 '/search' => 'Search',
                 '/publish' => 'Publish with us',
             ],
+            'Job categories' => JobCategory::orderBy('sort')->pluck('name', 'slug')
+                ->mapWithKeys(fn (string $name, string $slug): array => ["/jobs/{$slug}" => "{$name} jobs"])->all(),
             'Blog categories' => Category::orderBy('sort')->pluck('name', 'slug')
                 ->mapWithKeys(fn (string $name, string $slug): array => ["/{$slug}" => $name])->all(),
             'Pages' => Page::orderBy('title')->pluck('title', 'slug')

@@ -40,7 +40,7 @@
             @endforeach
         </div>
         <div class="mt-10">
-            {{ $posts->links() }}
+            {{ $posts->links('pagination.site') }}
         </div>
     </section>
 </x-layouts.app>
