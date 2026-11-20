@@ -276,7 +276,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] B1. Filament 5, `/admin` panel, role column, admin access, brand colours.
 - [x] B2. `/writer` panel: registration, email verification, password reset, profile, suspension check.
 - [x] B3. Settings store and Settings page (all tabs except *AI & search engines*, which comes in F2), mail config from settings, "Send test email".
-- [ ] B4. Pages (edit/add, public route), Redirects (resource + middleware), `EssentialsSeeder`.
+- [x] B4. Pages (edit/add, public route), Redirects (resource + middleware), `EssentialsSeeder`.
 
 **C. Blog**
 - [ ] C1. Categories, tags, posts: models, enums, Policy, admin resources, editor, WebP covers, SEO fields, quick answer / FAQs / sources fields with helper text.

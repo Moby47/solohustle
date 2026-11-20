@@ -69,3 +69,24 @@ Logged in as admin → **Site settings**:
 - [ ] Click **Send test email**: it says the message went to the log file, and the message is at the end of `storage/logs/laravel.log`.
 - [ ] Paste a whole Google meta tag into Search Console code and save: only the code is kept.
 - [ ] Reload the page: the tab you were on stays open.
+
+### B4. Pages, redirects and starter content
+Public site (logged out):
+- [ ] These pages open with real starter text: `/about`, `/contact`, `/editorial-policy`, `/creator-guidelines`, `/privacy-policy`, `/terms`, `/advertise`.
+- [ ] Headings, lists and links in page text look neat and on-brand, including at phone width.
+- [ ] A made-up address (e.g. `/nope`) shows a friendly "We couldn't find that page" screen with a way home.
+
+Dashboard → **Content → Pages**:
+- [ ] All seven pages are listed; search works; the "Published" filter works.
+- [ ] **New page**: type a title and the web address fills itself in. Add some text with a heading, a list, a link and an image. Leave **Published** off and save.
+- [ ] Click **Preview**: a yellow "Draft preview" bar shows at the top. In a private window the same address shows "not found".
+- [ ] Turn **Published** on: the page is visible in the private window too.
+- [ ] Try the web address `jobs` or `admin`: refused with a plain-English message.
+- [ ] On a published page, change the web address and save. Open the old address: you land on the new one.
+- [ ] Logged in as the owner, any page shows a small bar with **Edit in dashboard**.
+
+Dashboard → **Settings → Redirects**:
+- [ ] The redirect from the step above is listed, with **Times used** counting up as you visit the old address.
+- [ ] **New redirect** from `/old-test` to `/about`; **Try it** opens /about.
+- [ ] A redirect without a leading `/`, or from and to the same address, is refused.
+- [ ] Redirects never override a page that exists.
