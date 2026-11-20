@@ -295,7 +295,7 @@ Tick each sub-step (`[x]`) when it's done and committed. At the end of each grou
 - [x] D4. Job detail, JobPosting JSON-LD, closed-job handling.
 
 **E. Homepage, search and forms**
-- [ ] E1. Scout database search on posts and jobs, header search, `/search`.
+- [x] E1. Scout database search on posts and jobs, header search, `/search`.
 - [ ] E2. Homepage sections, driven by settings.
 - [ ] E3. Contact form (store + email), Inbox resource.
 - [ ] E4. Newsletter: local subscribers, Brevo push/sync/test, CSV export.

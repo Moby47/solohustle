@@ -234,3 +234,16 @@ Open any sample job from `/jobs`:
 - [ ] Change a job's category in the dashboard: the old address redirects to the new one.
 - [ ] The sample article (`/career/find-your-first-remote-job`) shows "Ready to put this into practice?" with links to the job categories linked to Career.
 - [ ] Optional: paste a job address into Google's Rich Results Test (https://search.google.com/test/rich-results) once the site is live, to confirm the job data is valid.
+
+---
+
+## E. Homepage, search and forms
+
+### E1. Search
+- [ ] The header has a magnifying-glass button on every page; the phone menu has a search box at the top.
+- [ ] `/search` with nothing typed suggests "All jobs" and the blog categories.
+- [ ] Search for part of an article title (e.g. `remot`) and for a word that only appears inside an article's text: both find it. Drafts never appear.
+- [ ] Search for a company name or a word from a job summary: matching **open** jobs appear above the articles, with "See all matching jobs" (opens the job list with that keyword).
+- [ ] Closed jobs never appear in search.
+- [ ] A search with no results shows "Nothing found for …" with suggestions.
+- [ ] More than 9 matching articles: page links appear at the bottom.
