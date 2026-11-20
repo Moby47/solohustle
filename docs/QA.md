@@ -221,3 +221,16 @@ Eight sample jobs are in your local database (companies starting with "Sample", 
 - [ ] At phone width the filters are behind a **Filters** button; on desktop they're a sidebar.
 - [ ] With more than 20 jobs, Previous/Next and page numbers appear and keep your filters (add jobs or duplicate a few to see this).
 - [ ] In **Site settings → Navigation**, the link dropdowns now include a "Job categories" group.
+
+### D4. Job page
+Open any sample job from `/jobs`:
+- [ ] Breadcrumb (Jobs / category / title), logo or first letter, title, company (links to their site), chips (work mode, type, region, pay).
+- [ ] One blue **Apply now** button that opens the employer's page in a new tab, with "Opens … website in a new tab" under it.
+- [ ] "About the role" (paragraphs as typed) and "What they're looking for" (a tick list from the requirements).
+- [ ] Facts box: category, where (region · location · country), work mode, type, experience, pay, posted, closes (if set), **Last checked {date}**, and the source link.
+- [ ] "More {category} jobs" lists other open jobs in the same category; "Guides to help you land it" shows articles from the job category's related blog category (publish an article in **SEO & Content** to see it on SEO/Content Writing jobs).
+- [ ] The closed sample job (`Copy Editor (closed sample)`, use "Include closed jobs") shows "This job is closed" with a link to open jobs, and **no** apply button.
+- [ ] Logged in as owner: "Edit in dashboard" bar with "Last checked …". In the dashboard, **View on site** opens the job.
+- [ ] Change a job's category in the dashboard: the old address redirects to the new one.
+- [ ] The sample article (`/career/find-your-first-remote-job`) shows "Ready to put this into practice?" with links to the job categories linked to Career.
+- [ ] Optional: paste a job address into Google's Rich Results Test (https://search.google.com/test/rich-results) once the site is live, to confirm the job data is valid.
